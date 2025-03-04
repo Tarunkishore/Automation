@@ -93,9 +93,13 @@ public class Common {
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 //		Common.extentSparkReport();
-		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
+//		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
 		ChromeOptions options = new ChromeOptions();
-		options.setBinary(browserPath);
+//		options.setBinary(browserPath);
+		
+		options.addArguments("--headless");
+		options.addArguments("--disable-gpu");
+		
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 //		Common.takeScreenshot();
