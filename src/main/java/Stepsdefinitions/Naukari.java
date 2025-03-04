@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class Naukari‎ {
+public class Naukari {
 WebDriver driver = Common.driver;
 	
 	@When("Search naukari and open sussessfully")

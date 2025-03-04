@@ -13,8 +13,8 @@ Scenario Outline: Tarak mehta ka ulta chasma
  	  	And I wait Low
 			And I scoll to view "Video_TMKOC_123"
 		Then I verify "Video_TMKOC_123" available on present page
-#			And I scoll to view "Video_TMKOC_101"
-#		Then I verify "Video_TMKOC_101" available on present page
+			And I scoll to view "Video_TMKOC_101"
+		Then I verify "Video_TMKOC_101" available on present page
 #			And I scoll to view "Video_TMKOC_107"
 #		Then I verify "Video_TMKOC_107" available on present page
 #			And I scoll to view "Video_TMKOC_103"
