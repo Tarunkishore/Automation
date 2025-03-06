@@ -31,7 +31,6 @@ public class Common {
 //	@BeforeSuite
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
-//		String filepath = System.getProperty("user.dir")+"/extent-reports/"+sdf.format(new Date())+".html";
 		extentReports = new ExtentReports();
 		String filepath = System.getProperty("user.dir") + "/extent-reports/"+ sdf.format(new Date()) + ".html";
 		sparkReporter = new ExtentSparkReporter(filepath);
@@ -46,7 +45,7 @@ public class Common {
 //		extentTest = extentReports.createTest("Test of Extent Spark Reports");
 
 	}
-	@AfterStep
+//	@AfterStep
 	public static String getScreenshotPath() throws IOException {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
@@ -93,12 +92,12 @@ public class Common {
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 //		Common.extentSparkReport();
-//		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
+		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
 		ChromeOptions options = new ChromeOptions();
-//		options.setBinary(browserPath);
+		options.setBinary(browserPath);
 		
-		options.addArguments("--headless");
-		options.addArguments("--disable-gpu");
+//		options.addArguments("--headless");
+//		options.addArguments("--disable-gpu");
 		
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
@@ -135,4 +134,3 @@ public class Common {
 	}
 }
 
-//how to implement takescreenshot and attach it in ExtentSparkReporter report of corresponding test case steps of feature file in BDD selenium java

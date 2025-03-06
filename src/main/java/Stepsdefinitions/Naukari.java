@@ -14,7 +14,6 @@ WebDriver driver = Common.driver;
 	
 	@When("Search naukari and open sussessfully")
 	public void search_naukari_and_open_sussessfully() {
-		
 		driver.get("https://www.naukri.com/mnjuser/homepage");
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		System.out.println("Search naukari and open sussessfully");
@@ -27,6 +26,6 @@ WebDriver driver = Common.driver;
 //		WebElement updateResumeButton = driver.findElement(By.xpath("//input[@type='button' and @value='Update resume']"));
 //		updateResumeButton.click();
 		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys("/Users/tarunkishore/git/repository/BDDTDD/src/test/resources/Utilities/Tarunkishore_SQA.pdf");
+		fileInput.sendKeys("/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Analyst.pdf");
 	}
 }

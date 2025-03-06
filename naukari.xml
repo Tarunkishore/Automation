@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Cucumber Suite">
+<suite name="Naukari Suite">
 
 	<!-- <listeners> <listener class-name="Stepsdefinitions.Listeners" /> </listeners> -->
-	<test name="TMKOC Episode">
+	<test name="Naukari">
 		<!-- <parameter name="cucumber.filter.tags" value="@TMKOC" /> -->
-		<parameter name="cucumber.filter.tags" value="@TMKOCFeature" />
+		<parameter name="cucumber.filter.tags" value="@NaukariFeature" />
 		<classes>
 			<class name="TestRunner.TestNGRunner" />
 		</classes>
