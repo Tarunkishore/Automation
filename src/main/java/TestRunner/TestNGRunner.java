@@ -12,7 +12,7 @@ import io.cucumber.testng.CucumberOptions;
 
 //		tags = "${cucumber.filter.tags}",
 //		tags = System.getProperty("cucumber.filter.tags", "@TMKOC"),
-		tags = "@NaukariFeature",
+		tags = "@naukari",
 //		tags = "@TMKOC",
 //		tags = "cucumber.filter.tags",
 		plugin = { "pretty", "html:target/cucumber.html"

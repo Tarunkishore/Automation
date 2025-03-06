@@ -30,7 +30,7 @@ Scenario Outline: upload resume in naukari
       | kishoretarunuem@gmail.com | Qwe123Asd |
       
 @naukari1
-Scenario Outline: upload resume in naukari1
+Scenario Outline: update profile in naukari
 #		Given Launch Brave Browser
 			And I wait Low
 		When Search naukari and open sussessfully
