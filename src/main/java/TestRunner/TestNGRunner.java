@@ -12,14 +12,14 @@ import io.cucumber.testng.CucumberOptions;
 
 //		tags = "${cucumber.filter.tags}",
 //		tags = System.getProperty("cucumber.filter.tags", "@TMKOC"),
-		tags = "@naukari",
+//		tags = "@naukari",
 //		tags = "@TMKOC",
-//		tags = "cucumber.filter.tags",
+//		tags = System.getProperty("cucumber.filter.tags", "@TMKOC"),
 		plugin = { "pretty", "html:target/cucumber.html"
 //				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumnerAdapter:"
 		}
 //		plugin = { "pretty","html:target/cucumber.html" }// tags used in feature file
 )
 public class TestNGRunner extends AbstractTestNGCucumberTests {
-
+	 
 }

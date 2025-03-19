@@ -6,11 +6,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Instahyre {
-WebDriver driver = Common.driver;
+	WebDriver driver = Common.driver;
+	ExtentTest extentTest = Common.extentTest;
+	ExtentReports extentReports = Common.extentReports;
 	
 	@When("Search Instahyre and open sussessfully")
 	public void search_instahyre_and_open_sussessfully() {

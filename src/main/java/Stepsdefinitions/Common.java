@@ -14,11 +14,14 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
+import  io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 
 public class Common {
@@ -27,8 +30,8 @@ public class Common {
 	public static ExtentReports extentReports;
 	public static ExtentTest extentTest;
 	public static String destPath;
+	ChromeOptions options = new ChromeOptions();
 	
-//	@BeforeSuite
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
 		extentReports = new ExtentReports();
@@ -42,10 +45,10 @@ public class Common {
 		extentReports.setSystemInfo("Tester", "SQA TARUN");
 		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
 		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
-//		extentTest = extentReports.createTest("Test of Extent Spark Reports");
 
 	}
-//	@AfterStep
+	
+//	@AfterStep(order=0)
 	public static String getScreenshotPath() throws IOException {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
@@ -56,80 +59,49 @@ public class Common {
 		return destPath;
 	}
 	
-	
-//	public static void addScreenshot(Scenario scenario) {
-//		final byte[] screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-//		scenario.attach(screenshot, "image/png", scenario.getName());
-//	}
-
-//	@AfterStep
-//   public void afterStep() throws IOException{
-//		Common.getScreenshotPath();
-//		Common.extentSparkReport();
-//        if (scenario.isFailed()) {
-//                String screenshotPath = Common.getScreenshotPath();
-//                extentReports.attachScreenshot(screenshotPath);  // Attach the screenshot to ExtentReports
-//		extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath("screen.png").build());
-//            
-//        }
-//    }
-
-//	// Create a new test in ExtentReports
-//	public static void createTest(String testName) {
-//		testLog = reports.createTest(testName); // Create a test with the given name
-//	}
-//
-//	// Log each test step into the report
-//	public static void logTestStep(String stepDescription) {
-//		testLog.info(stepDescription); // Log information about the test step
-//	}
-//
-//	// Attach a screenshot to the ExtentReports report
-//	public static void attachScreenshot(String screenshotPath) {
-//		testLog.addScreenCaptureFromPath(screenshotPath); // Attach the screenshot to the report
-//	}
+//	@AfterStep(order=1)
+	@AfterStep
+	public void after(Scenario scenario) throws IOException {
+		Common.extentSparkReport();
+		extentTest = extentReports.createTest(scenario.getName());
+		
+		String screenshotPath = getScreenshotPath();
+		
+		if (scenario.isFailed()) {
+			extentTest.generateLog(Status.FAIL, scenario.getName());
+//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+        } else {
+        	extentTest.generateLog(Status.PASS, scenario.getName());
+//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+        }
+	}
 
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
-//		Common.extentSparkReport();
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
-		ChromeOptions options = new ChromeOptions();
+//		String browserPath = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
+//		System.setProperty("webdriver.chrome.driver", browserPath);
 //		options.setBinary(browserPath);
 		
-		options.addArguments("--headless");
-		options.addArguments("--disable-gpu");
-		
+//		options.addArguments("--headless");
+//		options.addArguments("--window-size=1920x1080");
+//		options.addArguments("--disable-gpu"); // For compatibility with some systems
+//		options.addArguments("--remote-debugging-port=9222");
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
-//		Common.takeScreenshot();
 		System.out.println("Browser launched Successfully");
-//		screenshot(driver, System.currentTimeMillis());
 		System.out.println("Looking for clearCacheCookes");
 		driver.manage().deleteAllCookies();
 		Thread.sleep(7000);
 		System.out.println("Successfully clearCacheCookes");
 
 	}
-
-//	@BeforeStep
-//	public void beforeStep() {
-//		Common.extentSparkReport();
-//	}
-
-//	@AfterMethod
-//	public static void afterMethod(ITestResult result) {
-//		if (result.getStatus() == ITestResult.SUCCESS) {
-//			testLog.log(Status.PASS, "This is " + result.getMethod().getMethodName());
-//		} else if (result.getStatus() == ITestResult.FAILURE) {
-//			testLog.log(Status.FAIL, "This is " + result.getMethod().getMethodName());
-//		} else if (result.getStatus() == ITestResult.SKIP) {
-//			testLog.log(Status.SKIP, "This is " + result.getMethod().getMethodName());
-//		}
-//	}
-
+	
 	@After
-	public void tearDown() {
-//		extentReports.flush();
+	public void tearDown() throws IOException {		
+		extentReports.flush();
 		driver.quit();
 	}
 }

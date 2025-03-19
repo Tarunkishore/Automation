@@ -10,6 +10,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -18,16 +21,8 @@ import io.cucumber.java.en.When;
 public class TMKOCEP {
 
 	WebDriver driver = Common.driver;
-//	ExtentTest extentTest = Common.extentTest;
-
-//	static {
-//		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
-//		ChromeOptions options = new ChromeOptions();
-//		options.setBinary(browserPath);
-//		driver = new ChromeDriver(options);
-//		driver.manage().window().maximize();
-//		
-//	}
+	ExtentTest extentTest = Common.extentTest;
+	ExtentReports extentReports = Common.extentReports;
 
 	@And("Search youtube and open sussessfully")
 	public void search_youtube_and_open_sussessfully() throws IOException {
@@ -35,17 +30,10 @@ public class TMKOCEP {
 				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
 		Properties prop = new Properties();
 		prop.load(reader);
-//	      driver.get("https://www.youtube.com/");
 		driver.get(prop.getProperty("URL_Youtube"));
-//			Assert.assertEquals(driver.getTitle(), "YouTube");
-//			screenshot(driver, System.currentTimeMillis());
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		System.out.println("YouTube title verified successfully");
-//			Common.takeScreenshot();
-		
-//		Common.extentTest.log(Status.PASS,"Search youtube and open sussessfully");
-		 
-		
+	
 	}
 
 	@Then("I click on {string}")
@@ -58,9 +46,7 @@ public class TMKOCEP {
 		String searchTerm = prop.getProperty(string);
 		System.out.println("Found : " + string);
 		driver.findElement(By.xpath(searchTerm)).click();
-//			Common.takeScreenshot();
 		System.out.println("Clicked " + string + " successfully");
-//		extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
 	}
 
 	@Then("I verify {string} available on present page")
@@ -72,15 +58,12 @@ public class TMKOCEP {
 		String searchTerm = prop.getProperty(string);
 //	        System.out.println("Found : "+string);
 		WebElement element = driver.findElement(By.xpath(searchTerm));
-//	        Common.takeScreenshot();
 		System.out.println("Element found: " + element.getText());
-//		extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
 
 	}
 
 	@And("I scoll to view {string}")
 	public void i_scoll_to_view(String string) throws InterruptedException, IOException {
-//			Thread.sleep(5000);
 		FileReader reader = new FileReader(
 				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
 		Properties prop = new Properties();
@@ -90,14 +73,11 @@ public class TMKOCEP {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		WebElement element = driver.findElement(By.xpath(searchTerm));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-//			WebElement element = driver.findElement(By.xpath("//h6[contains(text(),'Education')]"));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 		System.out.println("scrolled successfully to : " + string);
 		Thread.sleep(5000);
-//			Common.takeScreenshot();
 		System.out.println("Scrolled Successfully to : " + element.getText());
-//		extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
 
 	}
 
@@ -105,16 +85,14 @@ public class TMKOCEP {
 	public void search(String str) throws IOException {
 		driver.findElement(By.xpath("(//input[@name='search_query'])[1]")).sendKeys(str);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-//			Common.takeScreenshot();
 		System.out.println("TMKOC episode searched successfully");
-//		extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+
 	}
 
 	@Then("I enter {string} and {string}")
 	public void i_enter_and(String string, String string2) {
 		driver.findElement(By.xpath("//input[@id='usernameField']")).sendKeys(string);
 		driver.findElement(By.xpath("//input[@id='passwordField']")).sendKeys(string2);
-//		extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
 	}
 
 	@And("I wait Low")
@@ -128,12 +106,6 @@ public class TMKOCEP {
 		System.out.println("I wait for high");
 		Thread.sleep(15000);
 	}
-
-//		@And("Close the Brave browser")
-//		public void close_the_brave_browser() {
-//			System.out.println("closed browser");
-//			driver.quit();
-//		}
 
 	@When("Search foundit and open sussessfully")
 	public void search_foundit_and_open_sussessfully() {
