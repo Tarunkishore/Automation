@@ -28,7 +28,6 @@ public class MouseKeyActions {
 		System.out.println("Looking for search button : " + string);
 		String searchTerm = prop.getProperty(string);
 //		driver.findElement(By.xpath(searchTerm));
-		
 //		actions = new Actions(driver);
 //		WebElement rightClick = driver.findElement(By.xpath(string));
 		Actions actions = new Actions(driver);
