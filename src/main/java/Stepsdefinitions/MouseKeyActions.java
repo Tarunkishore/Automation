@@ -12,6 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 
 public class MouseKeyActions {
@@ -57,5 +58,34 @@ public class MouseKeyActions {
 		actions.moveToElement(mouseHover).perform();
 		Thread.sleep(1000);
 	}
+	
+	@And("I select the {string}")
+	public void i_select_the(String string) throws IOException {
+		FileReader reader = new FileReader(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
+		Properties prop = new Properties();
+		prop.load(reader);
+		System.out.println("Looking for search button : " + string);
+		String searchTerm = prop.getProperty(string);
+		driver.findElement(By.xpath(searchTerm)).click();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
