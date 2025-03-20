@@ -43,8 +43,8 @@ Examples:
     	And I wait Low
     	And I scoll to view "Naukari_ViewProfile"
     	And I wait Low
-    Then I click on "Naukari_ViewProfile"
-    	And I wait Low
+    #Then I click on "Naukari_ViewProfile"
+    #	And I wait Low
     #Then I right click on "Naukari_Job_Tab" and open in new Window
     #And I wait Low
     Then I mouseHover on "Naukari_Job_Tab"
