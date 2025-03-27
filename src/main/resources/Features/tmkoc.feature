@@ -8,9 +8,9 @@ Given Launch Brave Browser
 Scenario Outline: Tarak mehta ka ulta chasma
 	  	And Search youtube and open sussessfully
 	  When Search "<Episode>"
-	  	And I wait Low
+	  	And I wait "Low"
 	  Then I click on "Youtube_Search"
- 	  	And I wait Low
+ 	  	And I wait "Low"
 			And I scoll to view "Video_TMKOC_123"
 		Then I verify "Video_TMKOC_123" available on present page
 			And I scoll to view "Video_TMKOC_101"

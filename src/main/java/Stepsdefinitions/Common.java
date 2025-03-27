@@ -81,14 +81,15 @@ public class Common {
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
-//		String browserPath = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
-//		System.setProperty("webdriver.chrome.driver", browserPath);
+//		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
+//		System.setProperty("webdriver.chrome.driver", browserPath1);
 //		options.setBinary(browserPath);
 		
 //		options.addArguments("--headless");
 //		options.addArguments("--window-size=1920x1080");
 //		options.addArguments("--disable-gpu"); // For compatibility with some systems
 //		options.addArguments("--remote-debugging-port=9222");
+		
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		System.out.println("Browser launched Successfully");
