@@ -89,23 +89,27 @@ public class TMKOCEP {
 
 	}
 
-	@Then("I enter {string} and {string}")
-	public void i_enter_and(String string, String string2) {
-		driver.findElement(By.xpath("//input[@id='usernameField']")).sendKeys(string);
-		driver.findElement(By.xpath("//input[@id='passwordField']")).sendKeys(string2);
+	
+	
+	
+	
+	
+	@And("I wait {string}")
+	public void i_wait(String string) throws InterruptedException, IOException {
+		FileReader reader = new FileReader(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
+		Properties prop = new Properties();
+		prop.load(reader);
+		String searchTerm = prop.getProperty(string);
+		int num = Integer.parseInt(searchTerm);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
 	}
 
-	@And("I wait Low")
-	public void i_wait_low() throws InterruptedException {
-		System.out.println("I wait for low");
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-	}
-
-	@And("I wait High")
-	public void i_wait_high() throws InterruptedException {
-		System.out.println("I wait for high");
-		Thread.sleep(15000);
-	}
+//	@And("I wait High")
+//	public void i_wait_high() throws InterruptedException {
+//		System.out.println("I wait for high");
+//		Thread.sleep(15000);
+//	}
 
 	@When("Search foundit and open sussessfully")
 	public void search_foundit_and_open_sussessfully() {
@@ -163,7 +167,7 @@ public class TMKOCEP {
 
 	}
 
-	@Given("I switch to frame")
+	@And("I switch to frame")
 	public void i_switch_to_frame() throws InterruptedException {
 		Thread.sleep(2000);
 		driver.switchTo().defaultContent();
