@@ -6,7 +6,7 @@ Given Launch Brave Browser
 
 @TMKOC
 Scenario Outline: Tarak mehta ka ulta chasma
-	  	And Search youtube and open sussessfully
+	  When I provide "<URL>" and open successflly
 	  When Search "<Episode>"
 	  	And I wait "Low"
 	  Then I click on "Youtube_Search"
@@ -23,9 +23,5 @@ Scenario Outline: Tarak mehta ka ulta chasma
 		Then I verify "Video_TMKOC_100" available on present page
 	  
 	  Examples:
-	  | Episode     |
-	  | TMKOC EP101 |  
-	  
-
-      
-     
+	  | Episode     |	URL	|
+	  | TMKOC EP101 |	URL_Youtube	|

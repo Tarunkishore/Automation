@@ -1,9 +1,11 @@
 package Stepsdefinitions;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -19,10 +21,8 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
-import  io.cucumber.java.Scenario;
-import io.cucumber.java.en.Given;
+import io.cucumber.java.*;
+import io.cucumber.java.en.*;
 
 public class Common {
 	public static WebDriver driver;
@@ -32,52 +32,6 @@ public class Common {
 	public static String destPath;
 	ChromeOptions options = new ChromeOptions();
 	
-	public static void extentSparkReport() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
-		extentReports = new ExtentReports();
-		String filepath = System.getProperty("user.dir") + "/extent-reports/"+ sdf.format(new Date()) + ".html";
-		sparkReporter = new ExtentSparkReporter(filepath);
-		sparkReporter.config().setTheme(Theme.DARK);
-		sparkReporter.config().setReportName("TMKOC Report Name");
-		sparkReporter.config().setDocumentTitle("MyReportTitle");
-		extentReports = new ExtentReports();
-		extentReports.attachReporter(sparkReporter);
-		extentReports.setSystemInfo("Tester", "SQA TARUN");
-		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
-		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
-
-	}
-	
-//	@AfterStep(order=0)
-	public static String getScreenshotPath() throws IOException {
-		TakesScreenshot ts = (TakesScreenshot) driver;
-		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
-		File source = ts.getScreenshotAs(OutputType.FILE);
-		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp +".png";
-		File file = new File(destPath);
-		FileUtils.copyFile(source, file);
-		return destPath;
-	}
-	
-//	@AfterStep(order=1)
-	@AfterStep
-	public void after(Scenario scenario) throws IOException {
-		Common.extentSparkReport();
-		extentTest = extentReports.createTest(scenario.getName());
-		
-		String screenshotPath = getScreenshotPath();
-		
-		if (scenario.isFailed()) {
-			extentTest.generateLog(Status.FAIL, scenario.getName());
-//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-        } else {
-        	extentTest.generateLog(Status.PASS, scenario.getName());
-//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-        }
-	}
-
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
@@ -99,6 +53,70 @@ public class Common {
 		System.out.println("Successfully clearCacheCookes");
 
 	}
+	
+	public static void extentSparkReport() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
+		extentReports = new ExtentReports();
+		String filepath = System.getProperty("user.dir") + "/extent-reports/"+ sdf.format(new Date()) + ".html";
+		sparkReporter = new ExtentSparkReporter(filepath);
+		sparkReporter.config().setTheme(Theme.DARK);
+		sparkReporter.config().setReportName("TMKOC Report Name");
+		sparkReporter.config().setDocumentTitle("MyReportTitle");
+		extentReports.attachReporter(sparkReporter);
+		extentReports.setSystemInfo("Tester", "SQA TARUN");
+		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
+		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
+
+	}
+	
+	public static String getScreenshotPath() throws IOException {
+		TakesScreenshot ts = (TakesScreenshot) driver;
+		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
+		File source = ts.getScreenshotAs(OutputType.FILE);
+		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp +".png";
+		File file = new File(destPath);
+		FileUtils.copyFile(source, file);
+		return destPath;
+	}
+	
+	public static String pageobjectVal(String string) throws IOException {
+		FileReader reader2 = new FileReader(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
+		Properties prop2 = new Properties();
+		prop2.load(reader2);
+		String searchTerm = prop2.getProperty(string);
+		return searchTerm;
+	}
+	
+	public static String configVal(String string) throws IOException {
+		FileReader reader = new FileReader(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
+		Properties prop = new Properties();
+		prop.load(reader);
+		String searchTerm = prop.getProperty(string);
+		return searchTerm;
+	}
+	
+	@AfterStep
+	public void after(Scenario scenario) throws IOException {
+		Common.extentSparkReport();
+		extentTest = extentReports.createTest(scenario.getName());
+		
+//		String screenshotPath = getScreenshotPath();
+		getScreenshotPath();
+		
+		if (scenario.isFailed()) {
+			extentTest.generateLog(Status.FAIL, scenario.getName());
+//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+        } else {
+        	extentTest.generateLog(Status.PASS, scenario.getName());
+//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+        }
+	}
+
+
 	
 	@After
 	public void tearDown() throws IOException {		

@@ -1,9 +1,7 @@
 package Stepsdefinitions;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Properties;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,10 +11,7 @@ import org.openqa.selenium.WebElement;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
 
 public class TMKOCEP {
 
@@ -24,26 +19,10 @@ public class TMKOCEP {
 	ExtentTest extentTest = Common.extentTest;
 	ExtentReports extentReports = Common.extentReports;
 
-	@And("Search youtube and open sussessfully")
-	public void search_youtube_and_open_sussessfully() throws IOException {
-		FileReader reader = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
-		Properties prop = new Properties();
-		prop.load(reader);
-		driver.get(prop.getProperty("URL_Youtube"));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-		System.out.println("YouTube title verified successfully");
-	
-	}
-
 	@Then("I click on {string}")
 	public void i_click_on(String string) throws IOException {
-		FileReader reader = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
-		Properties prop = new Properties();
-		prop.load(reader);
 		System.out.println("Looking for search button : " + string);
-		String searchTerm = prop.getProperty(string);
+		String searchTerm = Common.pageobjectVal(string);
 		System.out.println("Found : " + string);
 		driver.findElement(By.xpath(searchTerm)).click();
 		System.out.println("Clicked " + string + " successfully");
@@ -51,25 +30,17 @@ public class TMKOCEP {
 
 	@Then("I verify {string} available on present page")
 	public void i_verify_available_on_present_page(String string) throws IOException {
-		FileReader reader = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
-		Properties prop = new Properties();
-		prop.load(reader);
-		String searchTerm = prop.getProperty(string);
-//	        System.out.println("Found : "+string);
+		String searchTerm = Common.pageobjectVal(string);
+		System.out.println("I verify "+string+" available on present page ");
 		WebElement element = driver.findElement(By.xpath(searchTerm));
-		System.out.println("Element found: " + element.getText());
+		System.out.print("Element found: " + element.getText());
 
 	}
 
 	@And("I scoll to view {string}")
 	public void i_scoll_to_view(String string) throws InterruptedException, IOException {
-		FileReader reader = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
-		Properties prop = new Properties();
-		prop.load(reader);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-		String searchTerm = prop.getProperty(string);
+		String searchTerm = Common.pageobjectVal(string);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		WebElement element = driver.findElement(By.xpath(searchTerm));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
@@ -87,65 +58,13 @@ public class TMKOCEP {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		System.out.println("TMKOC episode searched successfully");
 
-	}
-
-	
-	
-	
-	
+	}	
 	
 	@And("I wait {string}")
 	public void i_wait(String string) throws InterruptedException, IOException {
-		FileReader reader = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
-		Properties prop = new Properties();
-		prop.load(reader);
-		String searchTerm = prop.getProperty(string);
+		String searchTerm = Common.configVal(string);
 		int num = Integer.parseInt(searchTerm);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
-	}
-
-//	@And("I wait High")
-//	public void i_wait_high() throws InterruptedException {
-//		System.out.println("I wait for high");
-//		Thread.sleep(15000);
-//	}
-
-	@When("Search foundit and open sussessfully")
-	public void search_foundit_and_open_sussessfully() {
-		driver.get("https://www.foundit.in/");
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-	}
-
-	@Then("I click on foundit Login button")
-	public void i_click_on_foundit_login_button() {
-		driver.findElement(By.xpath("//button[text()='Login']")).click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-	}
-
-	@Then("click on Login Via Password")
-	public void click_on_login_via_password() {
-		driver.findElement(By.xpath("//div[contains(text(),'Login via Password')]")).click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-	}
-
-	@Then("I enter {string} and {string} of foundit")
-	public void i_enter_and_of_foundit(String string, String string2) {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-		driver.findElement(By.id("signInName")).sendKeys(string);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-		driver.findElement(By.id("password")).sendKeys(string2);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-		driver.findElement(By.xpath("//input[@value='Login']")).click();
-	}
-
-	@Then("I click on Profile Tab in foundit header")
-	public void i_click_on_profile_tab_in_foundit_header() {
-		driver.findElement(By.xpath("//img[@alt='TARUN KISHORE']")).click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-
-		driver.findElement(By.xpath("//a[contains(text(),'View Profile')]")).click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 	}
 
 	@Then("I click on replace resume")

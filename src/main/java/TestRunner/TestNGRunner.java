@@ -15,7 +15,12 @@ import io.cucumber.testng.CucumberOptions;
 //		tags = "@naukari",
 //		tags = "@TMKOC",
 //		tags = System.getProperty("cucumber.filter.tags", "@TMKOC"),
-		plugin = { "pretty", "html:target/cucumber.html"
+		plugin = { "pretty",
+				"html:target/cucumber.html",
+//				"html:target/cucumber-reports/cucumber.html",  // HTML Report
+//				"json:target/cucumber-reports/cucumber.json",  // JSON Report
+//				"junit:target/cucumber-reports/cucumber.xml"
+				
 //				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumnerAdapter:"
 		}
 //		plugin = { "pretty","html:target/cucumber.html" }// tags used in feature file

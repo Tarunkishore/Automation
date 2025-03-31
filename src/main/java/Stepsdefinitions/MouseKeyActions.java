@@ -12,8 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
+import io.cucumber.java.en.*;
 
 public class MouseKeyActions {
 	WebDriver driver = Common.driver;
