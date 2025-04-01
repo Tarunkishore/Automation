@@ -1,16 +1,24 @@
 package Stepsdefinitions;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -19,10 +27,9 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
-import  io.cucumber.java.Scenario;
-import io.cucumber.java.en.Given;
+import Stepsdefinitions.Common.PasswordManager;
+import io.cucumber.java.*;
+import io.cucumber.java.en.*;
 
 public class Common {
 	public static WebDriver driver;
@@ -30,54 +37,9 @@ public class Common {
 	public static ExtentReports extentReports;
 	public static ExtentTest extentTest;
 	public static String destPath;
+//	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
 	
-	public static void extentSparkReport() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
-		extentReports = new ExtentReports();
-		String filepath = System.getProperty("user.dir") + "/extent-reports/"+ sdf.format(new Date()) + ".html";
-		sparkReporter = new ExtentSparkReporter(filepath);
-		sparkReporter.config().setTheme(Theme.DARK);
-		sparkReporter.config().setReportName("TMKOC Report Name");
-		sparkReporter.config().setDocumentTitle("MyReportTitle");
-		extentReports = new ExtentReports();
-		extentReports.attachReporter(sparkReporter);
-		extentReports.setSystemInfo("Tester", "SQA TARUN");
-		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
-		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
-
-	}
-	
-//	@AfterStep(order=0)
-	public static String getScreenshotPath() throws IOException {
-		TakesScreenshot ts = (TakesScreenshot) driver;
-		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
-		File source = ts.getScreenshotAs(OutputType.FILE);
-		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp +".png";
-		File file = new File(destPath);
-		FileUtils.copyFile(source, file);
-		return destPath;
-	}
-	
-//	@AfterStep(order=1)
-	@AfterStep
-	public void after(Scenario scenario) throws IOException {
-		Common.extentSparkReport();
-		extentTest = extentReports.createTest(scenario.getName());
-		
-		String screenshotPath = getScreenshotPath();
-		
-		if (scenario.isFailed()) {
-			extentTest.generateLog(Status.FAIL, scenario.getName());
-//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-        } else {
-        	extentTest.generateLog(Status.PASS, scenario.getName());
-//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-        }
-	}
-
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
@@ -99,6 +61,148 @@ public class Common {
 		System.out.println("Successfully clearCacheCookes");
 
 	}
+	
+	public static void extentSparkReport() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
+		extentReports = new ExtentReports();
+		String filepath = System.getProperty("user.dir") + "/extent-reports/"+ sdf.format(new Date()) + ".html";
+		sparkReporter = new ExtentSparkReporter(filepath);
+		sparkReporter.config().setTheme(Theme.DARK);
+		sparkReporter.config().setReportName("TMKOC Report Name");
+		sparkReporter.config().setDocumentTitle("MyReportTitle");
+		extentReports.attachReporter(sparkReporter);
+		extentReports.setSystemInfo("Tester", "SQA TARUN");
+		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
+		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
+
+	}
+	
+	public static String getScreenshotPath() throws IOException {
+		TakesScreenshot ts = (TakesScreenshot) driver;
+		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
+		File source = ts.getScreenshotAs(OutputType.FILE);
+		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp +".png";
+		File file = new File(destPath);
+		FileUtils.copyFile(source, file);
+		return destPath;
+	}
+	
+	public static String pageobjectVal(String string) throws IOException {
+		FileReader reader2 = new FileReader(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
+		Properties prop2 = new Properties();
+		prop2.load(reader2);
+		String searchTerm = prop2.getProperty(string);
+		return searchTerm;
+	}
+	
+	public static String configVal(String string) throws IOException {
+		FileReader reader = new FileReader(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
+		Properties prop = new Properties();
+		prop.load(reader);
+		String searchTerm = prop.getProperty(string);
+		return searchTerm;
+	}
+	
+	@AfterStep
+	public void after(Scenario scenario) throws IOException {
+		Common.extentSparkReport();
+		extentTest = extentReports.createTest(scenario.getName());
+		
+//		String screenshotPath = getScreenshotPath();
+		getScreenshotPath();
+		
+		if (scenario.isFailed()) {
+			extentTest.generateLog(Status.FAIL, scenario.getName());
+//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+        } else {
+        	extentTest.generateLog(Status.PASS, scenario.getName());
+//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
+            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+        }
+	}
+	
+	@Then("I click {string} times on {string} Apply")
+	 public void i_click_times_on_apply(String num, String string1) throws IOException {
+		
+		int applycount = Integer.parseInt(num);
+		String searchTerm = Common.pageobjectVal(string1);
+//		WebElement apply = driver.findElement(By.xpath(searchTerm));
+		Common.clickApply(applycount,searchTerm);
+		 
+	 }
+	
+	public static void clickApply(int num, String string) {
+		int count=0;		
+		while(count < num ) {
+			driver.findElement(By.xpath(string)).click();
+			System.out.println("Apply count : " + count);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			count++;
+			
+		}
+	}
+	
+	@When("I enter the {string} in {string}")
+	public void i_enter_the_in(String InputData, String InputField) throws Exception {
+		// String searchTerm = com.configVal(Password);
+		if (InputData.equalsIgnoreCase("Instahyre_Password")) {
+			String searchTerm = Common.pageobjectVal(InputField);
+			System.out.println("Password:" + searchTerm + "  #ActualPassword:" + InputData);
+			String password = PasswordManager.getDecodedPassword(InputData);
+
+			driver.findElement(By.xpath(searchTerm)).sendKeys(password);
+			// Thread.sleep(1000);
+
+		} else {
+			String searchTerm = Common.pageobjectVal(InputField);
+			String searchTerm2 = Common.configVal(InputData);
+			driver.findElement(By.xpath(searchTerm)).sendKeys(searchTerm2);
+		}
+	}
+	
+	public static class PasswordManager {
+
+		// Base64 Decode the password
+		public static String decodeBase64Password(String encodedPassword) throws Exception {
+			try {
+				byte[] decodedBytes = Base64.getDecoder().decode(encodedPassword);
+				return new String(decodedBytes);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("Invalid Base64 encoded password: " + encodedPassword, e);
+			}
+		}
+
+		// Fetch the Base64 encoded password from the configuration file and decode it
+		public static String getDecodedPassword(String encodedPasswordKey) throws Exception {
+			// Load the properties file
+			String searchTerm2 = Common.configVal(encodedPasswordKey);
+
+			// Fetch the Base64 encoded password from the properties file
+//			String encodedPassword = prop.getProperty(encodedPasswordKey);
+			System.out.println("Password:" + encodedPasswordKey + "  #ActualPassword:" + searchTerm2);
+			// Decode the password and return it
+			return decodeBase64Password(searchTerm2);
+		}
+	}
+
+//	@And("I wait {string}")
+//	public void i_wait(String string) throws InterruptedException, IOException {
+//		String searchTerm = Common.configVal(string);
+//		int num = Integer.parseInt(searchTerm);
+////		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
+//		driver.manage().timeouts().implicitlyWait(Duration.ofMillis(num));
+//		
+//		 // Create an instance of WebDriverWait with a 10-second timeout
+//         wait = new WebDriverWait(driver, 10);
+//
+//        // Wait until the element is visible and get the element
+//        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("some_element_id")));
+//
+//		
+//	}
 	
 	@After
 	public void tearDown() throws IOException {		
