@@ -2,6 +2,7 @@ package Stepsdefinitions;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -26,6 +27,8 @@ public class TMKOCEP {
 		System.out.println("Found : " + string);
 		driver.findElement(By.xpath(searchTerm)).click();
 		System.out.println("Clicked " + string + " successfully");
+		
+		
 	}
 
 	@Then("I verify {string} available on present page")
@@ -65,6 +68,8 @@ public class TMKOCEP {
 		String searchTerm = Common.configVal(string);
 		int num = Integer.parseInt(searchTerm);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
+		
+		
 	}
 
 	@Then("I click on replace resume")
