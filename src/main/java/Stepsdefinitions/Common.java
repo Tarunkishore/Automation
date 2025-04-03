@@ -89,8 +89,13 @@ public class Common {
 	}
 
 	public static String pageobjectVal(String string) throws IOException {
-		FileReader reader2 = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/main/resources/Pageobjects/pageobject.properties";
+		String pageObjectPath = projectPath + path;
+		FileReader reader2 = new FileReader(pageObjectPath);
+		
+//		FileReader reader2 = new FileReader(
+//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
 		Properties prop2 = new Properties();
 		prop2.load(reader2);
 		String searchTerm = prop2.getProperty(string);
@@ -98,8 +103,12 @@ public class Common {
 	}
 
 	public static String configVal(String string) throws IOException {
-		FileReader reader = new FileReader(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/main/resources/config/configuration.properties";
+		String configPath = projectPath + path;
+		FileReader reader = new FileReader(configPath);
+//		FileReader reader = new FileReader(
+//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
 		Properties prop = new Properties();
 		prop.load(reader);
 		String searchTerm = prop.getProperty(string);
@@ -138,11 +147,21 @@ public class Common {
 	public static void clickApply(int num, String string) {
 		int count = 1;
 		while (count <= num) {
+			WebElement button = driver.findElement(By.xpath(string));
+
+			if (button.isEnabled()) {
+			    button.click();
+			    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
+			} else {
+			    System.out.println("Button is disabled and cannot be clicked.");
+			}
 			System.out.println("Apply count : " + count);
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+//			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 //			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
 //			element.click();
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
+//			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
 			
 			count++;
 
