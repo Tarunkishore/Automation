@@ -24,8 +24,8 @@ Scenario Outline: upload resume in instahyre
     	And I wait "High"
 
     Examples: 
-      | username           | password | URL							|
-      | Instahyre_UserName | Password | URL_Instahyre1	|
+      | username | password | URL							|
+      | UserName | Password | URL_Instahyre1	|
       
 @instahyre
 Scenario Outline: SQA Job Apply in Instahyre
@@ -53,5 +53,5 @@ Scenario Outline: SQA Job Apply in Instahyre
     	And I wait "High"
 
     Examples: 
-      | username           | password | URL						|	ApplyCount	|
-      | Instahyre_UserName | Password | URL_Instahyre	| 4	|
+      | username | password | URL						|	ApplyCount	|
+      | UserName | Password | URL_Instahyre	| 4	|
