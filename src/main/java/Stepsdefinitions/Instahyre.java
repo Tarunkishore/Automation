@@ -41,7 +41,8 @@ public class Instahyre {
 		updateResumeButton.click();
 		Thread.sleep(10000);
 		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys("/Users/tarunkishore/git/repository/BDDTDD/src/test/resources/Utilities/Tarunkishore_SQA.pdf");
+		fileInput.sendKeys(
+				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 		Thread.sleep(10000);	
 	}
 }

@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -33,7 +35,13 @@ public class TMKOCEP {
 
 	@Then("I verify {string} available on present page")
 	public void i_verify_available_on_present_page(String string) throws IOException {
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String searchTerm = Common.pageobjectVal(string);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
+		
+		
+		
 		System.out.println("I verify "+string+" available on present page ");
 		WebElement element = driver.findElement(By.xpath(searchTerm));
 		System.out.print("Element found: " + element.getText());

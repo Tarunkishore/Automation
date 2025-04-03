@@ -39,20 +39,21 @@ public class Common {
 	public static String destPath;
 //	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
-	
+
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
 //		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
 //		System.setProperty("webdriver.chrome.driver", browserPath1);
 //		options.setBinary(browserPath);
-		
+
 //		options.addArguments("--headless");
 //		options.addArguments("--window-size=1920x1080");
 //		options.addArguments("--disable-gpu"); // For compatibility with some systems
 //		options.addArguments("--remote-debugging-port=9222");
-		
+
 		driver = new ChromeDriver(options);
+		
 		driver.manage().window().maximize();
 		System.out.println("Browser launched Successfully");
 		System.out.println("Looking for clearCacheCookes");
@@ -61,11 +62,11 @@ public class Common {
 		System.out.println("Successfully clearCacheCookes");
 
 	}
-	
+
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
 		extentReports = new ExtentReports();
-		String filepath = System.getProperty("user.dir") + "/extent-reports/"+ sdf.format(new Date()) + ".html";
+		String filepath = System.getProperty("user.dir") + "/extent-reports/" + sdf.format(new Date()) + ".html";
 		sparkReporter = new ExtentSparkReporter(filepath);
 		sparkReporter.config().setTheme(Theme.DARK);
 		sparkReporter.config().setReportName("TMKOC Report Name");
@@ -76,17 +77,17 @@ public class Common {
 		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
 
 	}
-	
+
 	public static String getScreenshotPath() throws IOException {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
 		File source = ts.getScreenshotAs(OutputType.FILE);
-		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp +".png";
+		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
 		File file = new File(destPath);
 		FileUtils.copyFile(source, file);
 		return destPath;
 	}
-	
+
 	public static String pageobjectVal(String string) throws IOException {
 		FileReader reader2 = new FileReader(
 				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
@@ -95,7 +96,7 @@ public class Common {
 		String searchTerm = prop2.getProperty(string);
 		return searchTerm;
 	}
-	
+
 	public static String configVal(String string) throws IOException {
 		FileReader reader = new FileReader(
 				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
@@ -104,51 +105,54 @@ public class Common {
 		String searchTerm = prop.getProperty(string);
 		return searchTerm;
 	}
-	
+
 	@AfterStep
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
-		
+
 //		String screenshotPath = getScreenshotPath();
 		getScreenshotPath();
-		
+
 		if (scenario.isFailed()) {
 			extentTest.generateLog(Status.FAIL, scenario.getName());
 //            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-        } else {
-        	extentTest.generateLog(Status.PASS, scenario.getName());
+			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+		} else {
+			extentTest.generateLog(Status.PASS, scenario.getName());
 //            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-        }
-	}
-	
-	@Then("I click {string} times on {string} Apply")
-	 public void i_click_times_on_apply(String num, String string1) throws IOException {
-		
-		int applycount = Integer.parseInt(num);
-		String searchTerm = Common.pageobjectVal(string1);
-//		WebElement apply = driver.findElement(By.xpath(searchTerm));
-		Common.clickApply(applycount,searchTerm);
-		 
-	 }
-	
-	public static void clickApply(int num, String string) {
-		int count=0;		
-		while(count < num ) {
-			driver.findElement(By.xpath(string)).click();
-			System.out.println("Apply count : " + count);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-			count++;
-			
+			extentTest.log(Status.FAIL,
+					MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
 		}
 	}
-	
+
+	@Then("I click {string} times on {string}")
+	public void i_click_times_on(String num, String string1) throws IOException {
+
+		int applycount = Integer.parseInt(num);
+		String searchTerm = Common.pageobjectVal(string1);
+		Common.clickApply(applycount, searchTerm);
+
+	}
+
+	public static void clickApply(int num, String string) {
+		int count = 1;
+		while (count <= num) {
+			System.out.println("Apply count : " + count);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+//			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
+//			element.click();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
+			
+			count++;
+
+		}
+	}
+
 	@When("I enter the {string} in {string}")
 	public void i_enter_the_in(String InputData, String InputField) throws Exception {
 		// String searchTerm = com.configVal(Password);
-		if (InputData.equalsIgnoreCase("Instahyre_Password")) {
+		if (InputData.equalsIgnoreCase("Password")) {
 			String searchTerm = Common.pageobjectVal(InputField);
 			System.out.println("Password:" + searchTerm + "  #ActualPassword:" + InputData);
 			String password = PasswordManager.getDecodedPassword(InputData);
@@ -162,7 +166,7 @@ public class Common {
 			driver.findElement(By.xpath(searchTerm)).sendKeys(searchTerm2);
 		}
 	}
-	
+
 	public static class PasswordManager {
 
 		// Base64 Decode the password
@@ -188,26 +192,9 @@ public class Common {
 		}
 	}
 
-//	@And("I wait {string}")
-//	public void i_wait(String string) throws InterruptedException, IOException {
-//		String searchTerm = Common.configVal(string);
-//		int num = Integer.parseInt(searchTerm);
-////		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
-//		driver.manage().timeouts().implicitlyWait(Duration.ofMillis(num));
-//		
-//		 // Create an instance of WebDriverWait with a 10-second timeout
-//         wait = new WebDriverWait(driver, 10);
-//
-//        // Wait until the element is visible and get the element
-//        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("some_element_id")));
-//
-//		
-//	}
-	
 	@After
-	public void tearDown() throws IOException {		
+	public void tearDown() throws IOException {
 		extentReports.flush();
 		driver.quit();
 	}
 }
-
