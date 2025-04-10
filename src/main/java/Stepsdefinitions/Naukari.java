@@ -1,5 +1,6 @@
 package Stepsdefinitions;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -28,9 +29,15 @@ public class Naukari {
 
 	@Then("I upload Resume on Naukari")
 	public void i_upload_resume_on_naukari() throws InterruptedException {
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/test/resources/utilities/Tarunkishore_Resume.pdf";
+		String resumePath = projectPath + path;
+//		FileReader reader2 = new FileReader(resumePath);
 		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys(
-				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		fileInput.sendKeys(resumePath);
+		
+//		fileInput.sendKeys(
+//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 	}
 
 	@When("I enter {string} in {string}")

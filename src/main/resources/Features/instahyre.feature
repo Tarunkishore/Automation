@@ -24,8 +24,8 @@ Scenario Outline: upload resume in instahyre
     	And I wait "High"
 
     Examples: 
-      | username           | password | URL							|
-      | Instahyre_UserName | Password | URL_Instahyre1	|
+      | username | password | URL							|
+      | UserName | Password | URL_Instahyre1	|
       
 @instahyre
 Scenario Outline: SQA Job Apply in Instahyre
@@ -42,15 +42,23 @@ Scenario Outline: SQA Job Apply in Instahyre
     Then I click on "Instahyre_Login_button"
     	And I wait "High"
     Then I verify "Instahyre_Searchjobs" available on present page
-    #Then I click on "Instahyre_Searchjobs"
+    Then I click on "Instahyre_Searchjobs"
     	And I wait "Low"
+    	Then I verify "Instahyre_TarunSQA" available on present page
     Then I click on "Instahyre_TarunSQA"
     	And I wait "Low"
+    Then I verify "Instahyre_View" available on present page
     Then I click on "Instahyre_View"
 			And I wait "Low"
     Then I click "<ApplyCount>" times on "Instahyre_Apply"
     	And I wait "High"
 
     Examples: 
-      | username           | password | URL						|	ApplyCount	|
-      | Instahyre_UserName | Password | URL_Instahyre	| 10	|
+      | username | password | URL						|	ApplyCount	|
+      | UserName | Password | URL_Instahyre	| 5	|
+      
+      
+      
+      
+      
+      

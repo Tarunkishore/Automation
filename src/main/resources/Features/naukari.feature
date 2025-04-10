@@ -32,8 +32,8 @@ Scenario Outline: upload resume in naukari
     	And I wait "Low"
 
 Examples: 
-	| username     	| password  |	URL	|
-	| Naukari_User1 | Password	| URL_naukari	|
+	| username | password  |	URL	|
+	| UserName | Password	| URL_naukari	|
 
  @naukari2
  Scenario Outline: Action class checking
@@ -77,8 +77,8 @@ Examples:
     #When I enter "<text>" in "Naukari_Job_Apply_Que_textBox"
 
 Examples: 
-	| username      | password |	NaukariURL	|	text |
-	| Naukari_User1 | Password | URL_naukari	|	6		 |
+	| username | password |	NaukariURL	|	text |
+	| UserName | Password | URL_naukari	|	6		 |
 
  @naukari1
  Scenario Outline: Action class checking
@@ -122,6 +122,6 @@ Examples:
     When I enter "<text>" in "Naukari_Job_Apply_Que_textBox"
 
 Examples: 
-	| username      | password | NaukariURL	|	text |
-	| Naukari_User1 | Password | URL_naukari	|	6		 |
+	| username | password | NaukariURL	|	text |
+	| UserName | Password | URL_naukari	|	6		 |
 
