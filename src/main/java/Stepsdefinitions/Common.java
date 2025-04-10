@@ -48,7 +48,7 @@ public class Common {
 //		System.setProperty("webdriver.chrome.driver", browserPath1);
 //		options.setBinary(browserPath);
 
-//		options.addArguments("--headless");
+		options.addArguments("--headless");
 //		options.addArguments("--window-size=1920x1080");
 //		options.addArguments("--disable-gpu"); // For compatibility with some systems
 //		options.addArguments("--remote-debugging-port=9222");

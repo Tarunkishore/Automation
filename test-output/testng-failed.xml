@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [Naukari Suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Naukari(failed)">
-    <parameter name="cucumber.filter.tags" value="@naukari1"/>
+    <parameter name="cucumber.filter.tags" value="@naukari"/>
     <classes>
       <class name="TestRunner.TestNGRunner">
         <methods>
