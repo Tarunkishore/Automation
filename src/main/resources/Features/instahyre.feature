@@ -44,6 +44,7 @@ Scenario Outline: SQA Job Apply in Instahyre
     Then I verify "Instahyre_Searchjobs" available on present page
     Then I click on "Instahyre_Searchjobs"
     	And I wait "Low"
+    	Then I verify "Instahyre_TarunSQA" available on present page
     Then I click on "Instahyre_TarunSQA"
     	And I wait "Low"
     Then I verify "Instahyre_View" available on present page
@@ -54,4 +55,10 @@ Scenario Outline: SQA Job Apply in Instahyre
 
     Examples: 
       | username | password | URL						|	ApplyCount	|
-      | UserName | Password | URL_Instahyre	| 4	|
+      | UserName | Password | URL_Instahyre	| 5	|
+      
+      
+      
+      
+      
+      

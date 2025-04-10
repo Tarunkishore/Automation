@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -53,7 +54,6 @@ public class Common {
 //		options.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(options);
-		
 		driver.manage().window().maximize();
 		System.out.println("Browser launched Successfully");
 		System.out.println("Looking for clearCacheCookes");
@@ -145,25 +145,25 @@ public class Common {
 	}
 
 	public static void clickApply(int num, String string) {
-		int count = 1;
-		while (count <= num) {
+//		int count = 1;
+		while (num >= 0) {
 			WebElement button = driver.findElement(By.xpath(string));
 
 			if (button.isEnabled()) {
 			    button.click();
-			    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+			    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
 				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
 			} else {
 			    System.out.println("Button is disabled and cannot be clicked.");
 			}
-			System.out.println("Apply count : " + count);
+			System.out.println("Apply count : " + num);
 //			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 //			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
 //			element.click();
 //			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
 			
-			count++;
+			num--;
 
 		}
 	}
