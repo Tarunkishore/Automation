@@ -1,11 +1,11 @@
 @sanity
 Feature: Sanity Testing
   
-@Low @naukari
+@Low @sanity
 Scenario: Launch Browser Test
     Given Launch Brave Browser
     
-@Low @naukari
+@Low @sanity
 Scenario Outline: upload resume in naukari
     Given Launch Brave Browser
 	    And I wait "Low"
@@ -17,7 +17,7 @@ Examples:
 	| URL_naukari	|
 	
 
-@Low @instahyre1
+@Low @sanity
 Scenario Outline: upload resume in instahyre
     Given Launch Brave Browser
     When I provide "<URL>" and open successflly
@@ -26,7 +26,7 @@ Examples:
   | username | password | URL							|
   | UserName | Password | URL_Instahyre1	|
       
-@Low @instahyre
+@Low @sanity
 Scenario Outline: SQA Job Apply in Instahyre
     Given Launch Brave Browser
     When I provide "<URL>" and open successflly

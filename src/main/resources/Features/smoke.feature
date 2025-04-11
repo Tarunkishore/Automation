@@ -1,7 +1,7 @@
 @smoke
 Feature: Smoke Testing 
 
-@Medium @naukari
+@smoke @Medium
 Scenario Outline: upload resume in naukari
     Given Launch Brave Browser
 	    And I wait "Low"
