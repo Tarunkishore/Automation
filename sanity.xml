@@ -3,7 +3,7 @@
 <suite name="instahyre Suite">
 
 	<test name="sanity">
-		<parameter name="cucumber.filter.tags" value="@sanity" />
+		<parameter name="cucumber.filter.tags" value="@sanity1" />
 		<classes>
 			<class name="TestRunner.TestNGRunner" />
 		</classes>

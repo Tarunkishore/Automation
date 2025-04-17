@@ -23,8 +23,8 @@ Scenario Outline: upload resume in instahyre
     When I provide "<URL>" and open successflly
 
 Examples: 
-  | username | password | URL							|
-  | UserName | Password | URL_Instahyre1	|
+  | URL							|
+  |	URL_Instahyre1	|
       
 @Low @sanity
 Scenario Outline: SQA Job Apply in Instahyre
@@ -32,6 +32,10 @@ Scenario Outline: SQA Job Apply in Instahyre
     When I provide "<URL>" and open successflly
 
 Examples: 
-  | username | password | URL						|
-  | UserName | Password | URL_Instahyre	|    
+  | URL						|
+  | URL_Instahyre	|   
+  
+  
+  
+ 
      	

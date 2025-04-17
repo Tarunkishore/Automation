@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -17,7 +18,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,9 +28,13 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import Stepsdefinitions.Common.PasswordManager;
-import io.cucumber.java.*;
-import io.cucumber.java.en.*;
+import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class Common {
 	public static WebDriver driver;
@@ -43,6 +47,7 @@ public class Common {
 
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
+		
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
 //		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
 //		System.setProperty("webdriver.chrome.driver", browserPath1);
@@ -54,11 +59,14 @@ public class Common {
 //		options.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(options);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.manage().window().maximize();
 		System.out.println("Browser launched Successfully");
 		System.out.println("Looking for clearCacheCookes");
 		driver.manage().deleteAllCookies();
-		Thread.sleep(7000);
+//		Thread.sleep(7000);
+		
+
 		System.out.println("Successfully clearCacheCookes");
 
 	}
@@ -145,8 +153,8 @@ public class Common {
 	}
 
 	public static void clickApply(int num, String string) {
-//		int count = 1;
-		while (num >= 0) {
+//		while (num > 0) {
+			for(int i=1; i<=num; i++) {
 			WebElement button = driver.findElement(By.xpath(string));
 
 			if (button.isEnabled()) {
@@ -157,16 +165,28 @@ public class Common {
 			} else {
 			    System.out.println("Button is disabled and cannot be clicked.");
 			}
-			System.out.println("Apply count : " + num);
+			System.out.println("Apply count : " + i);
 //			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 //			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
 //			element.click();
 //			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
 			
-			num--;
+//			num--;
 
 		}
 	}
+	
+	 @And("I select {string}")
+	 public void i_select(String string) throws IOException {
+		 Common.pageobjectVal(string);
+//		 driver.findElement(By.xpath(string)).click();
+		 
+		 List<WebElement> checkboxes=driver.findElements(By.xpath(string));
+		 for(WebElement checkbox : checkboxes) {
+			 checkbox.click();
+		 }
+		 
+	 }
 
 	@When("I enter the {string} in {string}")
 	public void i_enter_the_in(String InputData, String InputField) throws Exception {
@@ -210,6 +230,8 @@ public class Common {
 			return decodeBase64Password(searchTerm2);
 		}
 	}
+	
+	
 
 	@After
 	public void tearDown() throws IOException {

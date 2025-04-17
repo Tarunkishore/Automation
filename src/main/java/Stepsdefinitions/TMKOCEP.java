@@ -35,14 +35,11 @@ public class TMKOCEP {
 
 	@Then("I verify {string} available on present page")
 	public void i_verify_available_on_present_page(String string) throws IOException {
-		
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String searchTerm = Common.pageobjectVal(string);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-		
-		
-		
-		System.out.println("I verify "+string+" available on present page ");
+		boolean b = driver.findElement(By.xpath(searchTerm)).isDisplayed();
+		System.out.println(b+" I verify "+string+" available on present page ");
 		WebElement element = driver.findElement(By.xpath(searchTerm));
 		System.out.print("Element found: " + element.getText());
 
@@ -50,11 +47,9 @@ public class TMKOCEP {
 
 	@And("I scoll to view {string}")
 	public void i_scoll_to_view(String string) throws InterruptedException, IOException {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		String searchTerm = Common.pageobjectVal(string);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		WebElement element = driver.findElement(By.xpath(searchTerm));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 		System.out.println("scrolled successfully to : " + string);
@@ -66,7 +61,6 @@ public class TMKOCEP {
 	@When("Search {string}")
 	public void search(String str) throws IOException {
 		driver.findElement(By.xpath("(//input[@name='search_query'])[1]")).sendKeys(str);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 		System.out.println("TMKOC episode searched successfully");
 
 	}	
@@ -101,7 +95,7 @@ public class TMKOCEP {
 
 	@And("I switch to frame")
 	public void i_switch_to_frame() throws InterruptedException {
-		Thread.sleep(2000);
+//		Thread.sleep(2000);
 		driver.switchTo().defaultContent();
 	}
 }
