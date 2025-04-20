@@ -11,17 +11,22 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 public class P {
 	static WebDriver driver = new ChromeDriver();
+	static char rev[];
 	static int activePage = 1;
 
 	public static void main(String[] args) throws InterruptedException {
-
-		P.futuredatePicker(driver,"2026","May","5");
-		P.pastdatePicker(driver, "2021", "January", "26");
+		
+		P.dragAndDrop();
+//		P.rightClickMouseAction();
+		//P.mouseAction();
+//		P.reverseString();
+//		P.futuredatePicker(driver,"2026","May","5");
+//		P.pastdatePicker(driver, "2021", "January", "26");
 //		P.dynamicPaginationTable();
 //		P.staticTable();
 //		P.getElementOfSearchhead();
@@ -31,7 +36,137 @@ public class P {
 //		P.charSearch();
 //		P.charCount();
 		driver.quit();
+		
 
+	}
+	
+	public static void array1() {
+		int arr[] = {1,2,3,4,5};
+		for(int i=0; i<=arr.length-1; i++) {
+			System.out.print(arr[i]);
+			if(i<arr.length-1) {
+				System.out.print(",");
+			}
+		}
+	}
+	public static void array3() {
+		int arr[] = {1,2,3,4,5};
+//		for(int num:arr[]) {
+//			System.out.print(arr[i]);
+//			if(i<arr.length-1) {
+				System.out.print(",");
+//			}
+//		}
+				System.out.println(arr);
+	}
+	
+	public static void array2() {
+		String strArr[] = {"india","indonesia","British India","Japan","USA","Russia"};
+		String input = "ind";
+		
+	
+		System.out.println(strArr);
+		System.out.println(input);
+	
+	}
+	
+	public static void pattern2(int row, int col) {
+		for (int i = row; i >= row; i--) {
+			for (int j = col; j >= col; j--) {
+				
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+	}
+
+	public static void pattern1(int row, int col) {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col - i; j++) {
+				
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void dragAndDrop() throws InterruptedException {
+		System.out.println(".................Drag And Drop Start.....................");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		driver.manage().window().maximize();
+		driver.get("http://www.dhtmlgoodies.com/scripts/drag-drop-custom/demo-drag-drop-3.html");
+		
+		Actions act = new Actions(driver);
+		WebElement rome = driver.findElement(By.xpath("//div[@id='box6']"));
+		WebElement italy = driver.findElement(By.xpath("//div[@id='box106']"));
+		act.dragAndDrop(rome, italy).perform();
+		Thread.sleep(1000);
+		
+		WebElement romewashington = driver.findElement(By.xpath("//div[@id='box3']"));
+		WebElement us = driver.findElement(By.xpath("//div[@id='box103']"));
+		act.dragAndDrop(romewashington, us).perform();
+		Thread.sleep(1000);
+		
+		System.out.println(".................Drag And Drop Start.....................");
+	}
+	
+	public static void rightClickMouseAction() throws InterruptedException {
+		System.out.println(".................Right Click Mouse Start.....................");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		driver.manage().window().maximize();
+		driver.get("https://swisnl.github.io/jQuery-contextMenu/demo.html");
+		WebElement rightClickMe = driver.findElement(By.xpath("//span[text()='right click me']"));
+		Actions act = new Actions(driver);
+		act.contextClick(rightClickMe).perform();	// right click on element
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//span[text()='Copy']")).click();	// after click alert popup 
+		Thread.sleep(1000);
+		driver.switchTo().alert().accept();	// accept alert
+		Thread.sleep(1000);		
+		System.out.println(".................Right Click Mouse End.....................");
+	}
+	
+	public static void mouseAction() {
+		System.out.println(".................Mouse Hover Start.....................");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		driver.manage().window().maximize();
+		driver.get("https://www.flipkart.com/");
+		driver.switchTo().defaultContent();
+		
+		Actions act= new Actions(driver);
+		WebElement fashion = driver.findElement(By.xpath("//span[text()='Fashion']"));
+		WebElement womenEthnic = driver.findElement(By.xpath("//a[text()='Women Ethnic']"));
+		WebElement womenSaree = driver.findElement(By.xpath("//a[text()='Women Sarees']"));
+		act.moveToElement(fashion).moveToElement(womenEthnic).moveToElement(womenSaree).perform();
+		
+		System.out.println(".................Mouse Hover End.....................");
+		
+	}
+	
+//	input  : Automation Testing
+//	output : Automation gnitset
+	public static void reverseString() {
+		String input = "Automation Testing";
+		String word[] = input.split(" ");
+		System.out.println("input at Word[0] : "+word[0]);
+		System.out.println("input at Word[1] : "+word[1]);
+		
+		char chrarray[] = word[1].toCharArray();
+		char rev[] = new char[chrarray.length];
+		
+		System.out.println("\nCharacter Array without reverse\n");
+		
+		for(int i=0; i<chrarray.length; i++) {
+			System.out.println("Character at chrarray["+i+"] : "+chrarray[i]);
+		}
+		System.out.println("\nCharacter Array after reversing\n");
+		System.out.print(word[0]+" ");
+		
+		for(int i=chrarray.length; i>0; i--) {
+			rev[chrarray.length-i]= chrarray[i-1];
+	
+			System.out.print(rev[chrarray.length-i]);
+		}	
 	}
 	
 	public static void futuredatePicker(WebDriver driver, String year, String month, String date) throws InterruptedException {
@@ -40,14 +175,7 @@ public class P {
 		driver.manage().window().maximize();
 		driver.get("https://jqueryui.com/datepicker/");
 		driver.switchTo().frame(0);
-//		driver.findElement(By.xpath("//input[@id='datepicker']")).sendKeys("05/05/1998");
-//		System.out.println("Date picker by sendkey");
 		Thread.sleep(1000);
-		
-		// without using sendKey directly to picker
-//		String year="1998";
-//		String month="May";
-//		String date="5";
 		
 		driver.findElement(By.xpath("//input[@id='datepicker']")).click(); // open date picker calendar
 		//select month and year
@@ -58,7 +186,6 @@ public class P {
 				break;
 			}
 			driver.findElement(By.xpath("//span[@class='ui-icon ui-icon-circle-triangle-e']")).click(); //Next
-//			driver.findElement(By.xpath("//span[@class='ui-icon ui-icon-circle-triangle-w']")).click(); //Previous
 		}
 		// select the date
 		List<WebElement> alldates = driver.findElements(By.xpath("//table[@class='ui-datepicker-calendar']//tbody//tr//td//a"));
@@ -79,8 +206,6 @@ public class P {
 		driver.manage().window().maximize();
 		driver.get("https://jqueryui.com/datepicker/");
 		driver.switchTo().frame(0);
-//		driver.findElement(By.xpath("//input[@id='datepicker']")).sendKeys("05/05/1998");
-//		System.out.println("Date picker by sendkey");
 		Thread.sleep(1000);
 		
 		driver.findElement(By.xpath("//input[@id='datepicker']")).click(); // open date picker calendar
@@ -299,14 +424,6 @@ public class P {
 		}
 		System.out.println(".................Char Search End.....................");
 	}
-
-//	input  : Automation Testing
-//	output : Automation gnitset
-//	public void reverseString() {
-//		ArrayList list = new ArrayList() {
-//			
-//		}
-//	}
 
 	public static void frameHandle() {
 		System.out.println(".................Frame Handle Start.....................");
