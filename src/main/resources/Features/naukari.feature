@@ -27,8 +27,6 @@ Scenario Outline: upload resume in naukari
 	    And I wait "High"
     Then I click on "Naukari_Update_resume"
     Then I upload Resume on Naukari
-  	  And I switch to frame
-    Then I click on "Naukari_UpdateResume_Resume"
     	And I wait "Low"
 
 Examples: 

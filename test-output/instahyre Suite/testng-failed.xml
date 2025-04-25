@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [Cucumber Suite]" guice-stage="DEVELOPMENT">
-  <test thread-count="5" name="TMKOC Episode(failed)">
-    <parameter name="cucumber.filter.tags" value="@TMKOC"/>
+<suite name="Failed suite [instahyre Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="instahyre(failed)">
+    <parameter name="cucumber.filter.tags" value="@instahyre"/>
     <classes>
       <class name="TestRunner.TestNGRunner">
         <methods>
@@ -12,5 +12,5 @@
         </methods>
       </class> <!-- TestRunner.TestNGRunner -->
     </classes>
-  </test> <!-- TMKOC Episode(failed) -->
-</suite> <!-- Failed suite [Cucumber Suite] -->
+  </test> <!-- instahyre(failed) -->
+</suite> <!-- Failed suite [instahyre Suite] -->

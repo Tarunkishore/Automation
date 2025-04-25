@@ -1,23 +1,25 @@
 package Stepsdefinitions;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,40 +30,55 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import Stepsdefinitions.Common.PasswordManager;
-import io.cucumber.java.*;
-import io.cucumber.java.en.*;
+import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class Common {
 	public static WebDriver driver;
 	public static ExtentSparkReporter sparkReporter;
 	public static ExtentReports extentReports;
 	public static ExtentTest extentTest;
-	public static String destPath;
-//	public static WebDriverWait wait;
+//	public static String destPath;
+	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
 
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
+		
 //		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
 //		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
 //		System.setProperty("webdriver.chrome.driver", browserPath1);
 //		options.setBinary(browserPath);
-
-//		options.addArguments("--headless");
+		
+		options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});	// to remove "chrome is being controlled by automated Software"
+		options.addArguments("--incognito");
+//		options.addArguments("--headless=new");
 //		options.addArguments("--window-size=1920x1080");
 //		options.addArguments("--disable-gpu"); // For compatibility with some systems
 //		options.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(options);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.manage().window().maximize();
 		System.out.println("Browser launched Successfully");
 		System.out.println("Looking for clearCacheCookes");
 		driver.manage().deleteAllCookies();
-		Thread.sleep(7000);
+//		Thread.sleep(7000);
+		
+//		JavascriptExecutor js=(JavascriptExecutor) driver;
+//		js.executeScript("document.body.style.zoom='180%'");
+//		Thread.sleep(15000);
+		
 		System.out.println("Successfully clearCacheCookes");
 
 	}
+	
+	
 
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
@@ -82,7 +99,7 @@ public class Common {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
 		File source = ts.getScreenshotAs(OutputType.FILE);
-		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
+		String destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
 		File file = new File(destPath);
 		FileUtils.copyFile(source, file);
 		return destPath;
@@ -115,24 +132,20 @@ public class Common {
 		return searchTerm;
 	}
 
-	@AfterStep
+//	 commented to not generate screenshot and extent report for now do not delete below line
+//	@AfterStep
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
-
-//		String screenshotPath = getScreenshotPath();
 		getScreenshotPath();
 
 		if (scenario.isFailed()) {
 			extentTest.generateLog(Status.FAIL, scenario.getName());
-//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
 			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
 		} else {
 			extentTest.generateLog(Status.PASS, scenario.getName());
-//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-			extentTest.log(Status.FAIL,
-					MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-		}
+			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+		}		
 	}
 
 	@Then("I click {string} times on {string}")
@@ -145,8 +158,7 @@ public class Common {
 	}
 
 	public static void clickApply(int num, String string) {
-//		int count = 1;
-		while (num >= 0) {
+			for(int i=1; i<=num; i++) {
 			WebElement button = driver.findElement(By.xpath(string));
 
 			if (button.isEnabled()) {
@@ -157,16 +169,19 @@ public class Common {
 			} else {
 			    System.out.println("Button is disabled and cannot be clicked.");
 			}
-			System.out.println("Apply count : " + num);
-//			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-//			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
-//			element.click();
-//			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
-			
-			num--;
-
+			System.out.println("Apply count : " + i);
 		}
 	}
+	
+	 @And("I select {string}")
+	 public void i_select(String string) throws IOException {
+		 Common.pageobjectVal(string);
+		 List<WebElement> checkboxes=driver.findElements(By.xpath(string));
+		 for(WebElement checkbox : checkboxes) {
+			 checkbox.click();
+		 }
+		 
+	 }
 
 	@When("I enter the {string} in {string}")
 	public void i_enter_the_in(String InputData, String InputField) throws Exception {
@@ -210,10 +225,12 @@ public class Common {
 			return decodeBase64Password(searchTerm2);
 		}
 	}
+	
+	
 
 	@After
 	public void tearDown() throws IOException {
-		extentReports.flush();
+//		extentReports.flush();		// commented do not delete 
 		driver.quit();
 	}
 }
