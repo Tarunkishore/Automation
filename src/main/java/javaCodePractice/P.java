@@ -1,11 +1,19 @@
 package javaCodePractice;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -19,11 +27,14 @@ public class P {
 	static char rev[];
 	static int activePage = 1;
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		
-		P.dragAndDrop();
+		P.writeDynamicIntoExcel();
+//		P.writeIntoExcel();
+//		P.readFromExcel();
+//		P.dragAndDrop();
 //		P.rightClickMouseAction();
-		//P.mouseAction();
+//		P.mouseAction();
 //		P.reverseString();
 //		P.futuredatePicker(driver,"2026","May","5");
 //		P.pastdatePicker(driver, "2021", "January", "26");
@@ -35,9 +46,101 @@ public class P {
 //		P.selectDropDown();
 //		P.charSearch();
 //		P.charCount();
-		driver.quit();
 		
-
+		driver.quit();
+	}
+	
+	public static void writeDynamicIntoExcel() throws IOException {
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/test/resources/utilities/Book3.xlsx";
+		String excelPath = projectPath + path;
+		FileOutputStream file = new FileOutputStream(excelPath);
+		XSSFWorkbook workbook=new XSSFWorkbook();
+		XSSFSheet sheet=workbook.createSheet("Data");
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter number of rows : ");
+		int numOfRows=sc.nextInt();
+		
+		System.out.println("Enter number of cells : ");
+		int numOfCells=sc.nextInt();
+		
+		for(int r=0; r<numOfRows; r++) {
+			XSSFRow currentRow=sheet.createRow(r);
+			
+			for(int c=0; c<numOfCells; c++) {
+				XSSFCell cell=currentRow.createCell(c);
+				cell.setCellValue(sc.next());
+				
+			}
+		}
+		
+		workbook.write(file);
+		workbook.close();
+		file.close();
+		sc.close();
+		System.out.println("File Created...");
+	}
+	
+	
+	public static void writeIntoExcel() throws IOException {
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/test/resources/utilities/Book2.xlsx";
+		String excelPath = projectPath + path;
+		FileOutputStream file = new FileOutputStream(excelPath);
+		XSSFWorkbook workbook=new XSSFWorkbook();
+		XSSFSheet sheet=workbook.createSheet("Data");
+		
+		XSSFRow row1=sheet.createRow(0);
+		row1.createCell(0).setCellValue("Java1");
+		row1.createCell(1).setCellValue("12345");
+		row1.createCell(2).setCellValue("Auto1");
+		
+		XSSFRow row2=sheet.createRow(1);
+		row2.createCell(0).setCellValue("Java2");
+		row2.createCell(1).setCellValue("67890");
+		row2.createCell(2).setCellValue("Auto2");
+		
+		XSSFRow row3=sheet.createRow(2);
+		row3.createCell(0).setCellValue("Java3");
+		row3.createCell(1).setCellValue("11121");
+		row3.createCell(2).setCellValue("Auto3");
+		
+		XSSFRow row4=sheet.createRow(3);
+		row4.createCell(0).setCellValue("Java4");
+		row4.createCell(1).setCellValue("13141");
+		row4.createCell(2).setCellValue("Auto4");
+		
+		workbook.write(file);
+		workbook.close();
+		file.close();
+		System.out.println("File Created...");
+	}
+	
+	public static void readFromExcel() throws IOException {
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/test/resources/utilities/Book1.xlsx";
+//		String path = "/src/test/resources/utilities/Daily_Kharcha.xlsx";
+		String excelPath = projectPath + path;
+		FileInputStream file=new FileInputStream(excelPath);
+		XSSFWorkbook workbook = new XSSFWorkbook(file);
+//		XSSFSheet sheet = workbook.getSheet("Yearly");
+		XSSFSheet sheet = workbook.getSheet("Sheet1");
+		
+		int totalRows = sheet.getLastRowNum();
+		int totalCells = sheet.getRow(1).getLastCellNum();
+		System.out.println("number of rows : "+totalRows+"\n"+"number of Cells : "+totalCells);
+		
+		for(int r=0; r<=totalRows; r++) {
+			XSSFRow currentRow = sheet.getRow(r);
+			for(int c=0; c<totalCells; c++) {
+				XSSFCell cell = currentRow.getCell(c);
+				System.out.print(cell.toString()+"  |  ");
+			}
+			System.out.print("\n");
+		}
+		workbook.close();
+		file.close();
 	}
 	
 	public static void array1() {

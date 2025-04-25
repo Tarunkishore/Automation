@@ -2,7 +2,6 @@ package Stepsdefinitions;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -52,11 +51,13 @@ public class TMKOCEP {
 		WebElement element = driver.findElement(By.xpath(searchTerm));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
+//		System.out.println(js.executeScript("return window.pageYOffset;"));		// to get y-axis 
 		System.out.println("scrolled successfully to : " + string);
 		Thread.sleep(5000);
 		System.out.println("Scrolled Successfully to : " + element.getText());
 
 	}
+	
 
 	@When("Search {string}")
 	public void search(String str) throws IOException {
@@ -70,8 +71,6 @@ public class TMKOCEP {
 		String searchTerm = Common.configVal(string);
 		int num = Integer.parseInt(searchTerm);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
-		
-		
 	}
 
 	@Then("I click on replace resume")

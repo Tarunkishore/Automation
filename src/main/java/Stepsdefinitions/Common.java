@@ -1,6 +1,7 @@
 package Stepsdefinitions;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -41,8 +43,8 @@ public class Common {
 	public static ExtentSparkReporter sparkReporter;
 	public static ExtentReports extentReports;
 	public static ExtentTest extentTest;
-	public static String destPath;
-//	public static WebDriverWait wait;
+//	public static String destPath;
+	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
 
 	@Given("Launch Brave Browser")
@@ -52,8 +54,10 @@ public class Common {
 //		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
 //		System.setProperty("webdriver.chrome.driver", browserPath1);
 //		options.setBinary(browserPath);
-
-//		options.addArguments("--headless");
+		
+		options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});	// to remove "chrome is being controlled by automated Software"
+		options.addArguments("--incognito");
+//		options.addArguments("--headless=new");
 //		options.addArguments("--window-size=1920x1080");
 //		options.addArguments("--disable-gpu"); // For compatibility with some systems
 //		options.addArguments("--remote-debugging-port=9222");
@@ -66,10 +70,15 @@ public class Common {
 		driver.manage().deleteAllCookies();
 //		Thread.sleep(7000);
 		
-
+//		JavascriptExecutor js=(JavascriptExecutor) driver;
+//		js.executeScript("document.body.style.zoom='180%'");
+//		Thread.sleep(15000);
+		
 		System.out.println("Successfully clearCacheCookes");
 
 	}
+	
+	
 
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
@@ -90,7 +99,7 @@ public class Common {
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
 		File source = ts.getScreenshotAs(OutputType.FILE);
-		destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
+		String destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
 		File file = new File(destPath);
 		FileUtils.copyFile(source, file);
 		return destPath;
@@ -123,24 +132,20 @@ public class Common {
 		return searchTerm;
 	}
 
-	@AfterStep
+//	 commented to not generate screenshot and extent report for now do not delete below line
+//	@AfterStep
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
-
-//		String screenshotPath = getScreenshotPath();
 		getScreenshotPath();
 
 		if (scenario.isFailed()) {
 			extentTest.generateLog(Status.FAIL, scenario.getName());
-//            extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
 			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
 		} else {
 			extentTest.generateLog(Status.PASS, scenario.getName());
-//            extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(destPath).build());
-			extentTest.log(Status.FAIL,
-					MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-		}
+			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+		}		
 	}
 
 	@Then("I click {string} times on {string}")
@@ -153,7 +158,6 @@ public class Common {
 	}
 
 	public static void clickApply(int num, String string) {
-//		while (num > 0) {
 			for(int i=1; i<=num; i++) {
 			WebElement button = driver.findElement(By.xpath(string));
 
@@ -166,21 +170,12 @@ public class Common {
 			    System.out.println("Button is disabled and cannot be clicked.");
 			}
 			System.out.println("Apply count : " + i);
-//			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-//			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
-//			element.click();
-//			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string))).click();
-			
-//			num--;
-
 		}
 	}
 	
 	 @And("I select {string}")
 	 public void i_select(String string) throws IOException {
 		 Common.pageobjectVal(string);
-//		 driver.findElement(By.xpath(string)).click();
-		 
 		 List<WebElement> checkboxes=driver.findElements(By.xpath(string));
 		 for(WebElement checkbox : checkboxes) {
 			 checkbox.click();
@@ -235,7 +230,7 @@ public class Common {
 
 	@After
 	public void tearDown() throws IOException {
-		extentReports.flush();
+//		extentReports.flush();		// commented do not delete 
 		driver.quit();
 	}
 }
