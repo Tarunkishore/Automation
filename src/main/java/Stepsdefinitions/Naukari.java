@@ -32,12 +32,9 @@ public class Naukari {
 		String projectPath = System.getProperty("user.dir");
 		String path = "/src/test/resources/utilities/Tarunkishore_Resume.pdf";
 		String resumePath = projectPath + path;
-//		FileReader reader2 = new FileReader(resumePath);
 		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
 		fileInput.sendKeys(resumePath);
-		
-//		fileInput.sendKeys(
-//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		Thread.sleep(10000);
 	}
 
 	@When("I enter {string} in {string}")
