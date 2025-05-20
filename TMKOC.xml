@@ -2,7 +2,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Cucumber Suite">
 
-	<!-- <listeners> <listener class-name="Stepsdefinitions.Listeners" /> </listeners> -->
+	<listeners>
+		<listener class-name="Stepsdefinitions.Common" />
+	</listeners>
 	<test name="TMKOC Episode">
 		<parameter name="browserName" value="chrome" />
 		<!--<parameter name="headless" value="headless" /> -->
