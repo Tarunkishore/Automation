@@ -38,7 +38,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class Common implements ITestListener {
+
+//public class Common implements ITestListener {
+public class Common {
 	public static WebDriver driver;
 	public static ExtentSparkReporter sparkReporter;	// UI of the report
 	public static ExtentReports extentReports;		// populate common info of the report
