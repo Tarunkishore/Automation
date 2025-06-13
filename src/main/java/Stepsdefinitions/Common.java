@@ -1,7 +1,6 @@
 package Stepsdefinitions;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -13,7 +12,6 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -25,11 +23,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Scenario;
@@ -38,11 +34,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+
 public class Common {
 	public static WebDriver driver;
-	public static ExtentSparkReporter sparkReporter;
-	public static ExtentReports extentReports;
-	public static ExtentTest extentTest;
+	public static ExtentSparkReporter sparkReporter;	// UI of the report
+	public static ExtentReports extentReports;		// populate common info of the report
+	public static ExtentTest extentTest;		// create test case entries in the report and update status of the test methods
 //	public static String destPath;
 	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
@@ -78,7 +75,40 @@ public class Common {
 
 	}
 	
-	
+//	public void onStart(ITestContext Context) {
+//		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
+//		extentReports = new ExtentReports();
+//		String filepath = System.getProperty("user.dir") + "/extent-reports/" + sdf.format(new Date()) + ".html";
+//		sparkReporter = new ExtentSparkReporter(filepath);
+//		sparkReporter.config().setTheme(Theme.DARK);
+//		sparkReporter.config().setReportName("TMKOC Report Name");
+//		sparkReporter.config().setDocumentTitle("MyReportTitle");
+//		extentReports.attachReporter(sparkReporter);
+//		extentReports.setSystemInfo("Tester", "SQA TARUN");
+//		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
+//		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
+//		extentReports.setSystemInfo("Browser Name", "Chrome");
+//	}
+//	
+//	public void onTestSuccess(ITestResult result) {
+//		extentTest = extentReports.createTest(result.getName());
+//		extentTest.log(Status.PASS, result.getName());
+//	}
+//	
+//	public void onTestFailure(ITestResult result) {
+//		extentTest = extentReports.createTest(result.getName());
+//		extentTest.log(Status.FAIL, result.getName());
+//		extentTest.log(Status.FAIL, result.getThrowable());
+//	}
+//	
+//	public void onTestSkipped(ITestResult result) {
+//		extentTest = extentReports.createTest(result.getName());
+//		extentTest.log(Status.SKIP, result.getName());
+//	}
+//	
+//	public void onFinish(ITestContext Context) {
+//		extentReports.flush();
+//	}
 
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
@@ -133,18 +163,21 @@ public class Common {
 	}
 
 //	 commented to not generate screenshot and extent report for now do not delete below line
-//	@AfterStep
+	@AfterStep
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
-		getScreenshotPath();
+//		getScreenshotPath();
 
 		if (scenario.isFailed()) {
 			extentTest.generateLog(Status.FAIL, scenario.getName());
-			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+//			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+			extentTest.log(Status.FAIL, scenario.getName());
 		} else {
 			extentTest.generateLog(Status.PASS, scenario.getName());
-			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+			extentTest.log(Status.PASS, scenario.getName());
+//			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+			
 		}		
 	}
 
@@ -184,20 +217,24 @@ public class Common {
 	 }
 
 	@When("I enter the {string} in {string}")
-	public void i_enter_the_in(String InputData, String InputField) throws Exception {
+	public void i_enter_the_in(String InputData, String InputField) throws Exception  {
 		// String searchTerm = com.configVal(Password);
+		Thread.sleep(3000);
 		if (InputData.equalsIgnoreCase("Password")) {
 			String searchTerm = Common.pageobjectVal(InputField);
 			System.out.println("Password:" + searchTerm + "  #ActualPassword:" + InputData);
 			String password = PasswordManager.getDecodedPassword(InputData);
 
 			driver.findElement(By.xpath(searchTerm)).sendKeys(password);
-			// Thread.sleep(1000);
+			 Thread.sleep(3000);
 
 		} else {
 			String searchTerm = Common.pageobjectVal(InputField);
 			String searchTerm2 = Common.configVal(InputData);
+			Thread.sleep(3000);
 			driver.findElement(By.xpath(searchTerm)).sendKeys(searchTerm2);
+			Thread.sleep(3000);
+			
 		}
 	}
 
@@ -230,7 +267,7 @@ public class Common {
 
 	@After
 	public void tearDown() throws IOException {
-//		extentReports.flush();		// commented do not delete 
+		extentReports.flush();		// commented do not delete 
 		driver.quit();
 	}
 }

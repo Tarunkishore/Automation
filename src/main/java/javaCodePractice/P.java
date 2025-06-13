@@ -29,7 +29,7 @@ public class P {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		
-		P.writeDynamicIntoExcel();
+//		P.writeDynamicIntoExcel();
 //		P.writeIntoExcel();
 //		P.readFromExcel();
 //		P.dragAndDrop();
@@ -44,8 +44,6 @@ public class P {
 //		P.bootStrapSelectorDropdown();
 //		P.frameHandle();
 //		P.selectDropDown();
-//		P.charSearch();
-//		P.charCount();
 		
 		driver.quit();
 	}
@@ -489,43 +487,6 @@ public class P {
 			System.out.println(op.getText());
 		}
 		System.out.println(".................Select From Dropdown End.....................");
-	}
-
-	// Character Count in string
-	public static void charCount() {
-		System.out.println(".................Char Count Start.....................");
-		String name = "Automation Testing using Selenium java";
-//		String name = "Automation";
-		name = name.toLowerCase();
-		Map<Character, Integer> charMap = new HashMap<Character, Integer>();
-		char strArray[] = name.toCharArray();
-		for (char c : strArray) {
-			if (charMap.containsKey(c)) {
-				charMap.put(c, charMap.get(c) + 1);
-			} else {
-				charMap.put(c, 1);
-			}
-		}
-		System.out.println(name + " : " + charMap);
-		System.out.println(".................Char Count End.....................");
-	}
-
-	// Find the character "ind" present in the string
-	public static void charSearch() {
-		System.out.println(".................Char Search Start.....................");
-		ArrayList<String> sc = new ArrayList<>();
-		sc.add("india");
-		sc.add("Indonesia");
-		sc.add("British India");
-		sc.add("Bihar");
-		sc.add("Delhi");
-
-		String str = "ind";
-		for (String s : sc) {
-			if (s.toLowerCase().contains(str))
-				System.out.println(s);
-		}
-		System.out.println(".................Char Search End.....................");
 	}
 
 	public static void frameHandle() {

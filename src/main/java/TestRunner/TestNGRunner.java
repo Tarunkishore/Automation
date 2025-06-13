@@ -19,9 +19,9 @@ import io.cucumber.testng.CucumberOptions;
 				"html:target/cucumber.html",
 //				"html:target/cucumber-reports/cucumber.html",  // HTML Report
 //				"json:target/cucumber-reports/cucumber.json",  // JSON Report
-//				"junit:target/cucumber-reports/cucumber.xml"
+//				"junit:target/cucumber-reports/cucumber.xml",
 				
-//				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumnerAdapter:"
+//				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumnerAdapter:",
 		}
 //		plugin = { "pretty","html:target/cucumber.html" }// tags used in feature file
 )

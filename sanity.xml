@@ -2,6 +2,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="instahyre Suite">
 
+	<!-- <listeners>
+		<listener class-name="Stepsdefinitions.Common" />
+	</listeners> -->
 	<test name="sanity">
 		<parameter name="cucumber.filter.tags" value="@sanity1" />
 		<classes>

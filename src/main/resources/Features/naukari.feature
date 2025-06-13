@@ -30,7 +30,7 @@ Scenario Outline: upload resume in naukari
     	And I wait "Low"
 
 Examples: 
-	| username | password  |	URL	|
+	| username | password |	URL	|
 	| UserName | Password	| URL_naukari	|
 
  @naukari2
