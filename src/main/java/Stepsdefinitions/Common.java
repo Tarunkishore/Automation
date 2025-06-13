@@ -217,21 +217,24 @@ public class Common {
 	 }
 
 	@When("I enter the {string} in {string}")
-	public void i_enter_the_in(String InputData, String InputField) throws Exception {
+	public void i_enter_the_in(String InputData, String InputField) throws Exception  {
 		// String searchTerm = com.configVal(Password);
+		Thread.sleep(3000);
 		if (InputData.equalsIgnoreCase("Password")) {
 			String searchTerm = Common.pageobjectVal(InputField);
 			System.out.println("Password:" + searchTerm + "  #ActualPassword:" + InputData);
 			String password = PasswordManager.getDecodedPassword(InputData);
 
 			driver.findElement(By.xpath(searchTerm)).sendKeys(password);
-			 Thread.sleep(5000);
+			 Thread.sleep(3000);
 
 		} else {
 			String searchTerm = Common.pageobjectVal(InputField);
 			String searchTerm2 = Common.configVal(InputData);
+			Thread.sleep(3000);
 			driver.findElement(By.xpath(searchTerm)).sendKeys(searchTerm2);
-			Thread.sleep(5000);
+			Thread.sleep(3000);
+			
 		}
 	}
 
