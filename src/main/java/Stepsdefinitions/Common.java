@@ -111,7 +111,7 @@ public class Common {
 //	}
 
 	public static void extentSparkReport() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss-ms");
 		extentReports = new ExtentReports();
 		String filepath = System.getProperty("user.dir") + "/extent-reports/" + sdf.format(new Date()) + ".html";
 		sparkReporter = new ExtentSparkReporter(filepath);
@@ -127,7 +127,7 @@ public class Common {
 
 	public static String getScreenshotPath() throws IOException {
 		TakesScreenshot ts = (TakesScreenshot) driver;
-		String timestamp = new SimpleDateFormat("dd-hh-mm-ss-ms").format(new Date());
+		String timestamp = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss-ms").format(new Date());
 		File source = ts.getScreenshotAs(OutputType.FILE);
 		String destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
 		File file = new File(destPath);
