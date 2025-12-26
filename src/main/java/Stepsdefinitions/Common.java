@@ -65,51 +65,10 @@ public class Common {
 		System.out.println("Browser launched Successfully");
 		System.out.println("Looking for clearCacheCookes");
 		driver.manage().deleteAllCookies();
-//		Thread.sleep(7000);
-		
-//		JavascriptExecutor js=(JavascriptExecutor) driver;
-//		js.executeScript("document.body.style.zoom='180%'");
-//		Thread.sleep(15000);
-		
 		System.out.println("Successfully clearCacheCookes");
 
 	}
 	
-//	public void onStart(ITestContext Context) {
-//		SimpleDateFormat sdf = new SimpleDateFormat("dd-hh-mm-ss-ms");
-//		extentReports = new ExtentReports();
-//		String filepath = System.getProperty("user.dir") + "/extent-reports/" + sdf.format(new Date()) + ".html";
-//		sparkReporter = new ExtentSparkReporter(filepath);
-//		sparkReporter.config().setTheme(Theme.DARK);
-//		sparkReporter.config().setReportName("TMKOC Report Name");
-//		sparkReporter.config().setDocumentTitle("MyReportTitle");
-//		extentReports.attachReporter(sparkReporter);
-//		extentReports.setSystemInfo("Tester", "SQA TARUN");
-//		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
-//		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
-//		extentReports.setSystemInfo("Browser Name", "Chrome");
-//	}
-//	
-//	public void onTestSuccess(ITestResult result) {
-//		extentTest = extentReports.createTest(result.getName());
-//		extentTest.log(Status.PASS, result.getName());
-//	}
-//	
-//	public void onTestFailure(ITestResult result) {
-//		extentTest = extentReports.createTest(result.getName());
-//		extentTest.log(Status.FAIL, result.getName());
-//		extentTest.log(Status.FAIL, result.getThrowable());
-//	}
-//	
-//	public void onTestSkipped(ITestResult result) {
-//		extentTest = extentReports.createTest(result.getName());
-//		extentTest.log(Status.SKIP, result.getName());
-//	}
-//	
-//	public void onFinish(ITestContext Context) {
-//		extentReports.flush();
-//	}
-
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss-ms");
 		extentReports = new ExtentReports();
@@ -140,9 +99,6 @@ public class Common {
 		String path = "/src/main/resources/Pageobjects/pageobject.properties";
 		String pageObjectPath = projectPath + path;
 		FileReader reader2 = new FileReader(pageObjectPath);
-		
-//		FileReader reader2 = new FileReader(
-//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/Pageobjects/pageobject.properties");
 		Properties prop2 = new Properties();
 		prop2.load(reader2);
 		String searchTerm = prop2.getProperty(string);
@@ -154,8 +110,6 @@ public class Common {
 		String path = "/src/main/resources/config/configuration.properties";
 		String configPath = projectPath + path;
 		FileReader reader = new FileReader(configPath);
-//		FileReader reader = new FileReader(
-//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/main/resources/config/configuration.properties");
 		Properties prop = new Properties();
 		prop.load(reader);
 		String searchTerm = prop.getProperty(string);
@@ -193,12 +147,13 @@ public class Common {
 	public static void clickApply(int num, String string) {
 			for(int i=1; i<=num; i++) {
 			WebElement button = driver.findElement(By.xpath(string));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
 
 			if (button.isEnabled()) {
 			    button.click();
-			    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
+			   
 			} else {
 			    System.out.println("Button is disabled and cannot be clicked.");
 			}

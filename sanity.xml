@@ -6,7 +6,7 @@
 		<listener class-name="Stepsdefinitions.Common" />
 	</listeners> -->
 	<test name="sanity">
-		<parameter name="cucumber.filter.tags" value="@sanity1" />
+		<parameter name="cucumber.filter.tags" value="@sanity" />
 		<classes>
 			<class name="TestRunner.TestNGRunner" />
 		</classes>
