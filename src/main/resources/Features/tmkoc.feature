@@ -7,9 +7,9 @@ Given Launch Brave Browser
 @TMKOC
 Scenario Outline: Tarak mehta ka ulta chasma
 	  When I provide "<URL>" and open successflly
-	  When Search "<Episode>"
+	  When  I provide "<Episode>" in search box "Youtube_Search_Box" 
 	  	And I wait "Low"
-	  Then I click on "Youtube_Search"
+	  Then I click on "Youtube_Search_Icon"
  	  	And I wait "Low"
 			And I scoll to view "Video_TMKOC_123"
 		Then I verify "Video_TMKOC_123" available on present page

@@ -20,6 +20,7 @@ public class TMKOCEP {
 	WebDriver driver = Common.driver;
 	ExtentTest extentTest = Common.extentTest;
 	ExtentReports extentReports = Common.extentReports;
+	WebDriverWait wait = Common.wait;
 
 	@Then("I click on {string}")
 	public void i_click_on(String string) throws IOException {
@@ -34,7 +35,7 @@ public class TMKOCEP {
 
 	@Then("I verify {string} available on present page")
 	public void i_verify_available_on_present_page(String string) throws IOException {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		String searchTerm = Common.pageobjectVal(string);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
 		boolean b = driver.findElement(By.xpath(searchTerm)).isDisplayed();
@@ -53,15 +54,18 @@ public class TMKOCEP {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 //		System.out.println(js.executeScript("return window.pageYOffset;"));		// to get y-axis 
 		System.out.println("scrolled successfully to : " + string);
-		Thread.sleep(5000);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
 		System.out.println("Scrolled Successfully to : " + element.getText());
 
 	}
 	
 
-	@When("Search {string}")
-	public void search(String str) throws IOException {
-		driver.findElement(By.xpath("(//input[@name='search_query'])[1]")).sendKeys(str);
+	@Then("I provide {string} in search box {string}")
+	public void i_provide_in_search_box(String InputData, String InputField) throws IOException {		
+		String inputData = InputData;		
+		String searchTerm = Common.pageobjectVal(InputField);
+		driver.findElement(By.xpath(searchTerm)).sendKeys(inputData);
 		System.out.println("TMKOC episode searched successfully");
 
 	}	
