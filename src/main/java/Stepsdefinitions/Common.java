@@ -182,14 +182,14 @@ public class Common {
 			String password = PasswordManager.getDecodedPassword(InputData);
 
 			driver.findElement(By.xpath(searchTerm)).sendKeys(password);
-			 Thread.sleep(3000);
+			 Thread.sleep(1000);
 
 		} else {
 			String searchTerm = Common.pageobjectVal(InputField);
 			String searchTerm2 = Common.configVal(InputData);
 			Thread.sleep(3000);
 			driver.findElement(By.xpath(searchTerm)).sendKeys(searchTerm2);
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 			
 		}
 	}

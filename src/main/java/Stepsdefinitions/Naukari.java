@@ -41,7 +41,7 @@ public class Naukari {
 	public void i_enter_in(String string, String string2) throws IOException, InterruptedException {
 		String searchTerm = Common.pageobjectVal(string2);
 		driver.findElement(By.xpath(searchTerm)).sendKeys(string);
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 	}
 
 	@When("I provide {string} and open successflly")

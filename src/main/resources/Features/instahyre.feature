@@ -18,9 +18,15 @@ Scenario Outline: upload resume in instahyre
     Then I click on "Profile_Tab_header"
     	And I wait "High"
     	And I scoll to view "instahyre_Resume"
-    	And I update resume for instahyre
-    #	And I scoll to view "Job_Preferences"
-    #	And I scoll to view "Diversity_info"
+    #	And I update resume for instahyre
+    	And I scoll to view "Job_Preferences"
+    	And I scoll to view "Diversity_info"
+    	And I scoll to view "Job_Preferences"
+    	And I scoll to view "Diversity_info"
+    		And I scoll to view "Job_Preferences"
+    	And I scoll to view "Diversity_info"
+    	And I scoll to view "Job_Preferences"
+    	And I scoll to view "Diversity_info"
     	And I wait "High"
 
     Examples: 

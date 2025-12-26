@@ -29,17 +29,17 @@ public class TMKOCEP {
 		System.out.println("Found : " + string);
 		driver.findElement(By.xpath(searchTerm)).click();
 		System.out.println("Clicked " + string + " successfully");
-		
-		
+
+
 	}
 
 	@Then("I verify {string} available on present page")
 	public void i_verify_available_on_present_page(String string) throws IOException {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		String searchTerm = Common.pageobjectVal(string);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-		boolean b = driver.findElement(By.xpath(searchTerm)).isDisplayed();
-		System.out.println(b+" I verify "+string+" available on present page ");
+		boolean bool = driver.findElement(By.xpath(searchTerm)).isDisplayed();
+		System.out.println(bool+" I verify "+string+" available on present page ");
 		WebElement element = driver.findElement(By.xpath(searchTerm));
 		System.out.print("Element found: " + element.getText());
 
@@ -47,19 +47,19 @@ public class TMKOCEP {
 
 	@And("I scoll to view {string}")
 	public void i_scoll_to_view(String string) throws InterruptedException, IOException {
-//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-		String searchTerm = Common.pageobjectVal(string);
-		WebElement element = driver.findElement(By.xpath(searchTerm));
+		String searchTerm = Common.pageobjectVal(string);		
+		By locator = By.xpath(searchTerm);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		// Wait for element to be present
+		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		// Scroll to element
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView(true);", element);
-//		System.out.println(js.executeScript("return window.pageYOffset;"));		// to get y-axis 
-		System.out.println("scrolled successfully to : " + string);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-		System.out.println("Scrolled Successfully to : " + element.getText());
+		js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+		// Re-wait using LOCATOR (not element) to avoid stale reference
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		System.out.println("Scrolled successfully to : " + string);
 
 	}
-	
 
 	@Then("I provide {string} in search box {string}")
 	public void i_provide_in_search_box(String InputData, String InputField) throws IOException {		
@@ -69,7 +69,7 @@ public class TMKOCEP {
 		System.out.println("TMKOC episode searched successfully");
 
 	}	
-	
+
 	@And("I wait {string}")
 	public void i_wait(String string) throws InterruptedException, IOException {
 		String searchTerm = Common.configVal(string);
@@ -98,7 +98,7 @@ public class TMKOCEP {
 
 	@And("I switch to frame")
 	public void i_switch_to_frame() throws InterruptedException {
-//		Thread.sleep(2000);
+		//		Thread.sleep(2000);
 		driver.switchTo().defaultContent();
 	}
 }
