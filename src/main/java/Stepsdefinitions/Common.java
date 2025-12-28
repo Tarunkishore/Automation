@@ -41,24 +41,24 @@ public class Common {
 	public static ExtentSparkReporter sparkReporter;	// UI of the report
 	public static ExtentReports extentReports;		// populate common info of the report
 	public static ExtentTest extentTest;		// create test case entries in the report and update status of the test methods
-//	public static String destPath;
+	//	public static String destPath;
 	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
 
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
-		
-//		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
-//		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
-//		System.setProperty("webdriver.chrome.driver", browserPath1);
-//		options.setBinary(browserPath);
-		
+
+		//		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
+		//		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
+		//		System.setProperty("webdriver.chrome.driver", browserPath1);
+		//		options.setBinary(browserPath);
+
 		options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});	// to remove "chrome is being controlled by automated Software"
 		options.addArguments("--incognito");
-//		options.addArguments("--headless=new");
-//		options.addArguments("--window-size=1920x1080");
-//		options.addArguments("--disable-gpu"); // For compatibility with some systems
-//		options.addArguments("--remote-debugging-port=9222");
+		//		options.addArguments("--headless=new");
+		//		options.addArguments("--window-size=1920x1080");
+		//		options.addArguments("--disable-gpu"); // For compatibility with some systems
+		//		options.addArguments("--remote-debugging-port=9222");
 
 		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -69,7 +69,7 @@ public class Common {
 		System.out.println("Successfully clearCacheCookes");
 
 	}
-	
+
 	public static void extentSparkReport() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss-ms");
 		extentReports = new ExtentReports();
@@ -117,23 +117,48 @@ public class Common {
 		return searchTerm;
 	}
 
-//	 commented to not generate screenshot and extent report for now do not delete below line
+	//	 commented to not generate screenshot and extent report for now do not delete below line
 	@AfterStep
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
-//		getScreenshotPath();
+		//		getScreenshotPath();
 
 		if (scenario.isFailed()) {
 			extentTest.generateLog(Status.FAIL, scenario.getName());
-//			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+			//			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
 			extentTest.log(Status.FAIL, scenario.getName());
 		} else {
 			extentTest.generateLog(Status.PASS, scenario.getName());
 			extentTest.log(Status.PASS, scenario.getName());
-//			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-			
+			//			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+
 		}		
+	}
+
+	@Then("I click {string} job is available")
+	public void i_click_job_is_available(String string) throws IOException {
+		int count = 0;
+		String searchTerm = Common.pageobjectVal(string);
+		WebElement button = driver.findElement(By.xpath(searchTerm));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
+		if(button.isEnabled()) {
+			while(button.isEnabled()) {
+				button.click();
+				count =+ 1;
+				System.out.println("Apply count : " + count);
+				wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
+			}
+		}
+		else {
+			System.out.println("Job not found or Apply button is disabled.");
+		}
+
+		System.out.println("Clicked Apply Job button "+count+ " times.");
 	}
 
 	@Then("I click {string} times on {string}")
@@ -146,51 +171,51 @@ public class Common {
 	}
 
 	public static void clickApply(int num, String string) {
-			for(int i=1; i<=num; i++) {
+		for(int i=1; i<=num; i++) {
 			WebElement button = driver.findElement(By.xpath(string));
 			wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(string)));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
 
 			if (button.isEnabled()) {
-			    button.click();
-			   
+				button.click();
+
 			} else {
-			    System.out.println("Button is disabled and cannot be clicked.");
+				System.out.println("Button is disabled and cannot be clicked.");
 			}
 			System.out.println("Apply count : " + i);
 		}
 	}
-	
-	 @And("I select {string}")
-	 public void i_select(String string) throws IOException {
-		 Common.pageobjectVal(string);
-		 List<WebElement> checkboxes=driver.findElements(By.xpath(string));
-		 for(WebElement checkbox : checkboxes) {
-			 checkbox.click();
-		 }
-		 
-	 }
+
+	@And("I select {string}")
+	public void i_select(String string) throws IOException {
+		Common.pageobjectVal(string);
+		List<WebElement> checkboxes=driver.findElements(By.xpath(string));
+		for(WebElement checkbox : checkboxes) {
+			checkbox.click();
+		}
+
+	}
 
 	@When("I enter the {string} in {string}")
 	public void i_enter_the_in(String InputData, String InputField) throws Exception  {
 		// String searchTerm = com.configVal(Password);
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		if (InputData.equalsIgnoreCase("Password")) {
 			String searchTerm = Common.pageobjectVal(InputField);
 			System.out.println("Password:" + searchTerm + "  #ActualPassword:" + InputData);
 			String password = PasswordManager.getDecodedPassword(InputData);
 
 			driver.findElement(By.xpath(searchTerm)).sendKeys(password);
-			 Thread.sleep(1000);
+			Thread.sleep(1000);
 
 		} else {
 			String searchTerm = Common.pageobjectVal(InputField);
 			String searchTerm2 = Common.configVal(InputData);
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 			driver.findElement(By.xpath(searchTerm)).sendKeys(searchTerm2);
 			Thread.sleep(1000);
-			
+
 		}
 	}
 
@@ -212,14 +237,14 @@ public class Common {
 			String searchTerm2 = Common.configVal(encodedPasswordKey);
 
 			// Fetch the Base64 encoded password from the properties file
-//			String encodedPassword = prop.getProperty(encodedPasswordKey);
+			//			String encodedPassword = prop.getProperty(encodedPasswordKey);
 			System.out.println("Password:" + encodedPasswordKey + "  #ActualPassword:" + searchTerm2);
 			// Decode the password and return it
 			return decodeBase64Password(searchTerm2);
 		}
 	}
-	
-	
+
+
 
 	@After
 	public void tearDown() throws IOException {

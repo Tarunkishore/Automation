@@ -26,11 +26,64 @@ public class TMKOCEP {
 	public void i_click_on(String string) throws IOException {
 		System.out.println("Looking for search button : " + string);
 		String searchTerm = Common.pageobjectVal(string);
-		System.out.println("Found : " + string);
-		driver.findElement(By.xpath(searchTerm)).click();
-		System.out.println("Clicked " + string + " successfully");
+		System.out.println("Found : " + searchTerm);
+		WebElement element = driver.findElement(By.xpath(searchTerm));
+		element.click();
+		System.out.println("Clicked --" + element.getText() + "-- successfully");
+		
+	}
+	
+	@And("I will click on {string} or {string} only when it is down")
+	public void i_will_click_on_or_only_when_it_is_up(String stringdown, String stringup) throws IOException {
 
+		    String downXpath = Common.pageobjectVal(stringdown);
+		    String upXpath = Common.pageobjectVal(stringup);
 
+		    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		    // If UP button is visible → do nothing
+		    if (driver.findElements(By.xpath(upXpath)).size() > 0 &&
+		        driver.findElement(By.xpath(upXpath)).isDisplayed()) {
+
+		        System.out.println("Search Job button is already UP, hence not clicked");
+		        return;
+		    }
+
+		    // If DOWN button is visible → click
+		    if (driver.findElements(By.xpath(downXpath)).size() > 0) {
+
+		        WebElement downBtn = wait.until(
+		            ExpectedConditions.elementToBeClickable(By.xpath(downXpath))
+		        );
+
+		        downBtn.click();
+		        System.out.println("Search Job DOWN button found and clicked");
+		        return;
+		    }
+
+		    // If neither found → FAIL test
+//		    Assert.fail("Neither UP nor DOWN button is visible on the page");
+		
+
+		
+		
+//		String searchTermdown = Common.pageobjectVal(stringdown);
+//		String searchTermup = Common.pageobjectVal(stringup);
+//		wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+////		boolean booldown = driver.findElement(By.xpath(searchTermdown)).isDisplayed();
+////		boolean boolup = driver.findElement(By.xpath(searchTermup)).isDisplayed();
+//		
+//		if(driver.findElement(By.xpath(searchTermup)).isDisplayed() == true) {
+//			System.out.println("Search Job Up Button is already Up, Hence not clicked");
+//		}
+////		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
+//		if(driver.findElement(By.xpath(searchTermdown)).isDisplayed() == true) {
+//			driver.findElement(By.xpath(searchTermdown)).click();
+//			System.out.println("Search Job Down Button found and clicked");
+//		}
+		
+		
+		
 	}
 
 	@Then("I verify {string} available on present page")
@@ -41,7 +94,7 @@ public class TMKOCEP {
 		boolean bool = driver.findElement(By.xpath(searchTerm)).isDisplayed();
 		System.out.println(bool+" I verify "+string+" available on present page ");
 		WebElement element = driver.findElement(By.xpath(searchTerm));
-		System.out.print("Element found: " + element.getText());
+		System.out.println("Element found : --" + element.getText());
 
 	}
 
