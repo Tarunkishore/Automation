@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,66 +24,35 @@ public class TMKOCEP {
 	WebDriverWait wait = Common.wait;
 
 	@Then("I click on {string}")
-	public void i_click_on(String string) throws IOException {
+	public void i_click_on(String string) throws IOException, InterruptedException {
+		wait = new WebDriverWait(driver, (Duration.ofSeconds(5)));
 		System.out.println("Looking for search button : " + string);
 		String searchTerm = Common.pageobjectVal(string);
 		System.out.println("Found : " + searchTerm);
-		WebElement element = driver.findElement(By.xpath(searchTerm));
-		element.click();
-		System.out.println("Clicked --" + element.getText() + "-- successfully");
-		
+		By locator = By.xpath(searchTerm);
+		wait.until(ExpectedConditions.elementToBeClickable(locator)).click();;
+
 	}
 	
 	@And("I will click on {string} or {string} only when it is down")
 	public void i_will_click_on_or_only_when_it_is_up(String stringdown, String stringup) throws IOException {
-
 		    String downXpath = Common.pageobjectVal(stringdown);
 		    String upXpath = Common.pageobjectVal(stringup);
-
 		    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
 		    // If UP button is visible → do nothing
 		    if (driver.findElements(By.xpath(upXpath)).size() > 0 &&
 		        driver.findElement(By.xpath(upXpath)).isDisplayed()) {
-
 		        System.out.println("Search Job button is already UP, hence not clicked");
 		        return;
 		    }
 
 		    // If DOWN button is visible → click
 		    if (driver.findElements(By.xpath(downXpath)).size() > 0) {
-
-		        WebElement downBtn = wait.until(
-		            ExpectedConditions.elementToBeClickable(By.xpath(downXpath))
-		        );
-
+		        WebElement downBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(downXpath)));
 		        downBtn.click();
 		        System.out.println("Search Job DOWN button found and clicked");
 		        return;
 		    }
-
-		    // If neither found → FAIL test
-//		    Assert.fail("Neither UP nor DOWN button is visible on the page");
-		
-
-		
-		
-//		String searchTermdown = Common.pageobjectVal(stringdown);
-//		String searchTermup = Common.pageobjectVal(stringup);
-//		wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-////		boolean booldown = driver.findElement(By.xpath(searchTermdown)).isDisplayed();
-////		boolean boolup = driver.findElement(By.xpath(searchTermup)).isDisplayed();
-//		
-//		if(driver.findElement(By.xpath(searchTermup)).isDisplayed() == true) {
-//			System.out.println("Search Job Up Button is already Up, Hence not clicked");
-//		}
-////		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-//		if(driver.findElement(By.xpath(searchTermdown)).isDisplayed() == true) {
-//			driver.findElement(By.xpath(searchTermdown)).click();
-//			System.out.println("Search Job Down Button found and clicked");
-//		}
-		
-		
 		
 	}
 

@@ -147,7 +147,7 @@ public class Common {
 		if(button.isEnabled()) {
 			while(button.isEnabled()) {
 				button.click();
-				count =+ 1;
+				count += 1;
 				System.out.println("Apply count : " + count);
 				wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
