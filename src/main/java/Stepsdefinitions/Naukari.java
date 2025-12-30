@@ -34,7 +34,7 @@ public class Naukari {
 		String resumePath = projectPath + path;
 		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
 		fileInput.sendKeys(resumePath);
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 	}
 
 	@When("I enter {string} in {string}")

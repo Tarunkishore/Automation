@@ -99,6 +99,14 @@ public class TMKOCEP {
 		int num = Integer.parseInt(searchTerm);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
 	}
+	
+	@And("I wait for {string}")
+	public void i_wait_for(String string) throws InterruptedException, IOException {
+		String searchTerm = Common.configVal(string);
+		int num = Integer.parseInt(searchTerm);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
+		Thread.sleep(10000);
+	}
 
 	@Then("I click on replace resume")
 	public void i_click_on_replace_resume() throws InterruptedException {
