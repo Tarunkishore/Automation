@@ -34,14 +34,24 @@ public class Naukari {
 		String resumePath = projectPath + path;
 		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
 		fileInput.sendKeys(resumePath);
-		Thread.sleep(10000);
+		Thread.sleep(5000);
+	}
+	
+	@Then("I upload Resume on Foundit Monster")
+	public void i_upload_resume_on_foundit_monster() throws InterruptedException {
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/test/resources/utilities/Tarunkishore_Resume.pdf";
+		String resumePath = projectPath + path;
+		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
+		fileInput.sendKeys(resumePath);
+		Thread.sleep(5000);
 	}
 
 	@When("I enter {string} in {string}")
 	public void i_enter_in(String string, String string2) throws IOException, InterruptedException {
 		String searchTerm = Common.pageobjectVal(string2);
 		driver.findElement(By.xpath(searchTerm)).sendKeys(string);
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 	}
 
 	@When("I provide {string} and open successflly")
