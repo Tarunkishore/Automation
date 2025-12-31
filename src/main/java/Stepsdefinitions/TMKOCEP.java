@@ -104,8 +104,8 @@ public class TMKOCEP {
 	public void i_wait_for(String string) throws InterruptedException, IOException {
 		String searchTerm = Common.configVal(string);
 		int num = Integer.parseInt(searchTerm);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
-		Thread.sleep(10000);
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
+		Thread.sleep(4000);
 	}
 
 	@Then("I click on replace resume")

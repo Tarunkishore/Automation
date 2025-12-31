@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -56,6 +57,15 @@ public class MouseKeyActions {
 		WebElement mouseHover = driver.findElement(By.xpath("//div[text()='Jobs']"));
 		actions.moveToElement(mouseHover).perform();
 		Thread.sleep(1000);
+		
+		
+// select from drop down
+//		Select dropDwn = new Select(mouseHover);
+//		dropDwn.selectByContainsVisibleText("");
+//		dropDwn.selectByIndex(0);
+//		dropDwn.selectByValue("");
+//		dropDwn.selectByVisibleText("");
+//		dropDwn.deselectAll();
 	}
 	
 	@And("I select the {string}")

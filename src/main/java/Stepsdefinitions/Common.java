@@ -45,6 +45,7 @@ public class Common {
 	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
 
+//	@parameter({"browser"})
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 
@@ -118,7 +119,7 @@ public class Common {
 	}
 
 	//	 commented to not generate screenshot and extent report for now do not delete below line
-	@AfterStep
+//	@AfterStep		//if u want extent report uncomment only this @AfterStep 
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
@@ -248,7 +249,7 @@ public class Common {
 
 	@After
 	public void tearDown() throws IOException {
-		extentReports.flush();		// commented do not delete 
+//		extentReports.flush();		// commented do not delete 
 		driver.quit();
 	}
 }
