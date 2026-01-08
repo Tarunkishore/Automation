@@ -37,6 +37,16 @@ public class Naukari {
 		Thread.sleep(5000);
 	}
 	
+	@Then("I upload Resume on Instahyre")
+	public void i_upload_resume_on_instahyre() throws InterruptedException {
+		String projectPath = System.getProperty("user.dir");
+		String path = "/src/test/resources/utilities/Tarunkishore_Resume.pdf";
+		String resumePath = projectPath + path;
+		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
+		fileInput.sendKeys(resumePath);
+		Thread.sleep(5000);
+	}
+	
 	@Then("I upload Resume on Foundit Monster")
 	public void i_upload_resume_on_foundit_monster() throws InterruptedException {
 		String projectPath = System.getProperty("user.dir");

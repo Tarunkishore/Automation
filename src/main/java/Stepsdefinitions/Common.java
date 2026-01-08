@@ -137,31 +137,6 @@ public class Common {
 		}		
 	}
 
-	@Then("I click {string} job is available")
-	public void i_click_job_is_available(String string) throws IOException {
-		int count = 0;
-		String searchTerm = Common.pageobjectVal(string);
-		WebElement button = driver.findElement(By.xpath(searchTerm));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-		if(button.isEnabled()) {
-			while(button.isEnabled()) {
-				button.click();
-				count += 1;
-				System.out.println("Apply count : " + count);
-				wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-			}
-		}
-		else {
-			System.out.println("Job not found or Apply button is disabled.");
-		}
-
-		System.out.println("Clicked Apply Job button "+count+ " times.");
-	}
-
 	@Then("I click {string} times on {string}")
 	public void i_click_times_on(String num, String string1) throws IOException {
 
