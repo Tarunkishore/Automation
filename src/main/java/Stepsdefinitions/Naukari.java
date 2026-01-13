@@ -7,6 +7,8 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -19,6 +21,7 @@ public class Naukari {
 	WebDriver driver = Common.driver;
 	ExtentTest extentTest = Common.extentTest;
 	ExtentReports extentReports = Common.extentReports;
+	WebDriverWait wait = Common.wait;
 
 	@When("I Search naukari hardcode URL and open successflly")
 	public void i_search_naukari_hardcode_url_and_open_successflly() throws IOException {
@@ -29,22 +32,15 @@ public class Naukari {
 
 	@Then("I upload Resume on Naukari")
 	public void i_upload_resume_on_naukari() throws InterruptedException {
-		String projectPath = System.getProperty("user.dir");
-		String path = "/src/test/resources/utilities/Tarunkishore_Resume.pdf";
-		String resumePath = projectPath + path;
-		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys(resumePath);
-		Thread.sleep(5000);
-	}
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement resumeInput = wait.until(ExpectedConditions.presenceOfElementLocated(
+		                By.xpath("//input[@type='file' and @id='attachCV']")));
+		resumeInput.sendKeys("/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		Thread.sleep(3000);	
+		wait.until(ExpectedConditions.textToBe(By.xpath("//div[@class='updateOn typ-14Regular']"), 
+				driver.findElement(By.xpath("//div[@class='updateOn typ-14Regular']")).getText()));
+		System.out.println("Found : "+driver.findElement(By.xpath("//div[@class='updateOn typ-14Regular']")).getText());
 	
-	@Then("I upload Resume on Instahyre")
-	public void i_upload_resume_on_instahyre() throws InterruptedException {
-		String projectPath = System.getProperty("user.dir");
-		String path = "/src/test/resources/utilities/Tarunkishore_Resume.pdf";
-		String resumePath = projectPath + path;
-		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys(resumePath);
-		Thread.sleep(5000);
 	}
 	
 	@Then("I upload Resume on Foundit Monster")

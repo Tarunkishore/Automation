@@ -66,15 +66,14 @@ public class Instahyre {
 	
 	@Then("I update resume for instahyre")
 	public void i_update_resume_for_instahyre() throws InterruptedException {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		WebElement updateResumeButton = driver.findElement(By.xpath("(//label[@for='resume-input'])[2]"));
-		wait.until(ExpectedConditions.visibilityOf(updateResumeButton));
-		updateResumeButton.click();
-		Thread.sleep(5000);
-		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys(
-//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Resume.pdf");
-				"/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement resumeInput = wait.until(ExpectedConditions.presenceOfElementLocated(
+		                By.xpath("//input[@type='file' and @id='resume-input']")));
+		resumeInput.sendKeys("/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 		Thread.sleep(3000);	
+		wait.until(ExpectedConditions.textToBe(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']"), 
+				driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText()
+				));
+		System.out.println("Found : "+driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText());
 	}
 }

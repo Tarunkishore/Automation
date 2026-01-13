@@ -19,10 +19,7 @@ Scenario Outline: upload resume in instahyre
     	And I wait for "Very_High"
     	And I scoll to view "instahyre_Resume"
     	And I wait for "Very_High"
-    Then I click on "instahyre_Resume_upload"
-    	And I wait for "Very_High"
-    Then I upload Resume on Naukari
-    #	And I update resume for instahyre
+    	And I update resume for instahyre
 
     Examples: 
       | username | password | URL							|
