@@ -18,11 +18,11 @@ Scenario Outline: Delete & Upload resume in foundit Monster
     	And I wait "Low"
     Then I click on "Foundit_Login"
 	    And I wait for "Low"
-	  Then I verify "Founfit_Profile" available on present page
-		Then I click on "Founfit_Profile"
+	  Then I verify "Foundit_Profile" available on present page
+		Then I click on "Foundit_Profile"
 		  And I wait for "Low"
-		Then I verify "Founfit_ViewProfile" available on present page
-		Then I click on "Founfit_ViewProfile"
+		Then I verify "Foundit_ViewProfile" available on present page
+		Then I click on "Foundit_ViewProfile"
 		  And I wait for "Low"
 		Then I verify "Foundit_Resume_Delete_Button" available on present page
 		Then I click on "Foundit_Resume_Delete_Button"
