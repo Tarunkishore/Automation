@@ -25,7 +25,7 @@ public class TMKOCEP {
 
 	@Then("I click on {string}")
 	public void i_click_on(String string) throws IOException, InterruptedException {
-		wait = new WebDriverWait(driver, (Duration.ofSeconds(5)));
+		wait = new WebDriverWait(driver, (Duration.ofSeconds(10)));
 		System.out.println("Looking for search button : " + string);
 		String searchTerm = Common.pageobjectVal(string);
 		System.out.println("Found : " + searchTerm);
