@@ -26,7 +26,6 @@ Scenario Outline: upload resume in naukari
     Then I click on "Naukari_ViewProfile"
 	    And I wait "High"
 	  Then I verify "Naukari_Update_resume" available on present page
-    Then I click on "Naukari_Update_resume"
     Then I upload Resume on Naukari
     	And I wait "Low"
 
