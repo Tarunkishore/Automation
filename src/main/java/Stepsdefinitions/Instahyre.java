@@ -2,6 +2,7 @@ package Stepsdefinitions;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,8 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
 
 public class Instahyre {
 	WebDriver driver = Common.driver;
@@ -75,5 +75,28 @@ public class Instahyre {
 				driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText()
 				));
 		System.out.println("Found : "+driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText());
+	}
+	
+	@Then("I apply job")
+	public void i_apply_job() throws InterruptedException {
+		Thread.sleep(3000);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='employer-profile-opportunity']")));
+		List<WebElement> jobList = driver.findElements(By.xpath("//a[@id='employer-profile-opportunity']"));
+		System.out.println("Found number of jobs : "+jobList.size());
+		driver.findElement(By.xpath("(//a[@id='employer-profile-opportunity'])[1]")).click();
+		for(int i=1; i<=jobList.size(); i++) {
+			WebElement button = driver.findElement(By.xpath(("(//button[contains(text(),'Apply')])[1]")));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[contains(text(),'Apply')])[1]")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[contains(text(),'Apply')])[1]")));
+			if (button.isEnabled()) {
+				button.click();
+			} else {
+				System.out.println("Button is disabled and cannot be clicked.");
+			}
+			System.out.println("Apply count : " + i);
+		}
+
 	}
 }
