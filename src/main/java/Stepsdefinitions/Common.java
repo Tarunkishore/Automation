@@ -45,6 +45,7 @@ public class Common {
 	public static WebDriverWait wait;
 	ChromeOptions options = new ChromeOptions();
 
+//	@parameter({"browser"})
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 
@@ -118,7 +119,7 @@ public class Common {
 	}
 
 	//	 commented to not generate screenshot and extent report for now do not delete below line
-	@AfterStep
+//	@AfterStep		//if u want extent report uncomment only this @AfterStep 
 	public void after(Scenario scenario) throws IOException {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
@@ -134,31 +135,6 @@ public class Common {
 			//			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
 
 		}		
-	}
-
-	@Then("I click {string} job is available")
-	public void i_click_job_is_available(String string) throws IOException {
-		int count = 0;
-		String searchTerm = Common.pageobjectVal(string);
-		WebElement button = driver.findElement(By.xpath(searchTerm));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-		if(button.isEnabled()) {
-			while(button.isEnabled()) {
-				button.click();
-				count += 1;
-				System.out.println("Apply count : " + count);
-				wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
-			}
-		}
-		else {
-			System.out.println("Job not found or Apply button is disabled.");
-		}
-
-		System.out.println("Clicked Apply Job button "+count+ " times.");
 	}
 
 	@Then("I click {string} times on {string}")
@@ -248,7 +224,7 @@ public class Common {
 
 	@After
 	public void tearDown() throws IOException {
-		extentReports.flush();		// commented do not delete 
+//		extentReports.flush();		// commented do not delete 
 		driver.quit();
 	}
 }

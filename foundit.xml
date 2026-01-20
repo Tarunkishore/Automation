@@ -6,9 +6,9 @@
 		<listener class-name="Stepsdefinitions.Common" />
 	</listeners> -->
 	
-	<test name="instahyre">
+	<test name="foundit">
 	<!--	<parameter name="browser" value="safari" />  -->
-		<parameter name="cucumber.filter.tags" value="@instahyre" />
+		<parameter name="cucumber.filter.tags" value="@foundit" />
 		<classes>
 			<class name="TestRunner.TestNGRunner" />
 		</classes>

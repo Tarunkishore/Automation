@@ -1,7 +1,7 @@
 @instahyreFeature
 Feature: Istahyre
 
-@instahyre1
+@instahyre
 Scenario Outline: upload resume in instahyre
     Given Launch Brave Browser
     When I provide "<URL>" and open successflly
@@ -16,18 +16,10 @@ Scenario Outline: upload resume in instahyre
     Then I click on "Instahyre_Login_button"
     	And I wait "High"
     Then I click on "Profile_Tab_header"
-    	And I wait "High"
+    	And I wait for "Very_High"
     	And I scoll to view "instahyre_Resume"
-    #	And I update resume for instahyre
-    	And I scoll to view "Job_Preferences"
-    	And I scoll to view "Diversity_info"
-    	And I scoll to view "Job_Preferences"
-    	And I scoll to view "Diversity_info"
-    		And I scoll to view "Job_Preferences"
-    	And I scoll to view "Diversity_info"
-    	And I scoll to view "Job_Preferences"
-    	And I scoll to view "Diversity_info"
-    	And I wait "High"
+    	And I wait for "Very_High"
+    	And I update resume for instahyre
 
     Examples: 
       | username | password | URL							|
@@ -64,7 +56,7 @@ Scenario Outline: SQA Job Apply in Instahyre
       | UserName | Password | URL_Instahyre1	| 5	|
       
       
-@instahyre
+@instahyre1
 Scenario Outline: SQA Job Apply in Instahyre
     Given Launch Brave Browser
     When I provide "<URL>" and open successflly
@@ -79,20 +71,14 @@ Scenario Outline: SQA Job Apply in Instahyre
     Then I click on "Instahyre_Login_button"
     	And I wait "High"
     Then I verify "Instahyre_Searchjobs" available on present page
+    #Then I click on "Instahyre_Searchjobs"
     	And I wait "Low"
     Then I verify "Instahyre_TarunSQA" available on present page
     Then I click on "Instahyre_TarunSQA"
     	And I wait "Low"
     Then I verify "Instahyre_JobList" available on present page
-    Then I click on "Instahyre_JobList"
-#			And I wait "Low"
-		Then I verify "Instahyre_Apply" available on present page	
-    #Then I click "<ApplyCount>" times on "Instahyre_Apply"
     	And I wait "High"
-#		Then I verify "Instahyre_Searchjobs_Down" available on present page
-#			And I will click on "Instahyre_Searchjobs_Down" or "Instahyre_Searchjobs_Up" only when it is down
-    Then I click "Instahyre_Apply" job is available 
-    	And I wait "High"
+    	And I apply job
 
     Examples: 
       | username | password | URL						|

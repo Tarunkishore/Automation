@@ -25,7 +25,7 @@ public class TMKOCEP {
 
 	@Then("I click on {string}")
 	public void i_click_on(String string) throws IOException, InterruptedException {
-		wait = new WebDriverWait(driver, (Duration.ofSeconds(5)));
+		wait = new WebDriverWait(driver, (Duration.ofSeconds(10)));
 		System.out.println("Looking for search button : " + string);
 		String searchTerm = Common.pageobjectVal(string);
 		System.out.println("Found : " + searchTerm);
@@ -104,8 +104,8 @@ public class TMKOCEP {
 	public void i_wait_for(String string) throws InterruptedException, IOException {
 		String searchTerm = Common.configVal(string);
 		int num = Integer.parseInt(searchTerm);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
-		Thread.sleep(10000);
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(num));
+		Thread.sleep(4000);
 	}
 
 	@Then("I click on replace resume")

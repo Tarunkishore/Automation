@@ -1,6 +1,8 @@
 package Stepsdefinitions;
 
+import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,8 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
 
 public class Instahyre {
 	WebDriver driver = Common.driver;
@@ -38,17 +39,64 @@ public class Instahyre {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 	}
 	
+	@Then("I click {string} job is available")
+	public void i_click_job_is_available(String string) throws IOException {
+		int count = 0;
+		String searchTerm = Common.pageobjectVal(string);
+		WebElement button = driver.findElement(By.xpath(searchTerm));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
+		if(button.isEnabled()) {
+			while(button.isEnabled()) {
+				button.click();
+				count += 1;
+				System.out.println("Apply count : " + count);
+				wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+				wait.until(ExpectedConditions.elementToBeClickable(By.xpath(searchTerm)));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(searchTerm)));
+			}
+		}
+		else {
+			System.out.println("Job not found or Apply button is disabled.");
+		}
+
+		System.out.println("Clicked Apply Job button "+count+ " times.");
+	}
+	
 	@Then("I update resume for instahyre")
 	public void i_update_resume_for_instahyre() throws InterruptedException {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		WebElement updateResumeButton = driver.findElement(By.xpath("(//label[@for='resume-input'])[2]"));
-		wait.until(ExpectedConditions.visibilityOf(updateResumeButton));
-		updateResumeButton.click();
-		Thread.sleep(5000);
-		WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-		fileInput.sendKeys(
-//				"/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/utilities/Tarunkishore_Resume.pdf");
-				"/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement resumeInput = wait.until(ExpectedConditions.presenceOfElementLocated(
+		                By.xpath("//input[@type='file' and @id='resume-input']")));
+		resumeInput.sendKeys("/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 		Thread.sleep(3000);	
+		wait.until(ExpectedConditions.textToBe(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']"), 
+				driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText()
+				));
+		System.out.println("Found : "+driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText());
+	}
+	
+	@Then("I apply job")
+	public void i_apply_job() throws InterruptedException {
+		Thread.sleep(3000);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='employer-profile-opportunity']")));
+		List<WebElement> jobList = driver.findElements(By.xpath("//a[@id='employer-profile-opportunity']"));
+		System.out.println("Found number of jobs : "+jobList.size());
+		driver.findElement(By.xpath("(//a[@id='employer-profile-opportunity'])[1]")).click();
+		for(int i=1; i<=jobList.size(); i++) {
+			WebElement button = driver.findElement(By.xpath(("(//button[contains(text(),'Apply')])[1]")));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[contains(text(),'Apply')])[1]")));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[contains(text(),'Apply')])[1]")));
+			if (button.isEnabled()) {
+				button.click();
+			} else {
+				System.out.println("Button is disabled and cannot be clicked.");
+			}
+			System.out.println("Apply count : " + i);
+		}
+
 	}
 }
