@@ -20,12 +20,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import Stepsdefinitions.Common;
 
 public class P {
 	static WebDriver driver = new ChromeDriver();
 	static char rev[];
 	static int activePage = 1;
+	public static WebDriverWait wait;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		
@@ -44,9 +49,32 @@ public class P {
 //		P.bootStrapSelectorDropdown();
 //		P.frameHandle();
 //		P.selectDropDown();
+		P.handleWindowNavigation();
 		
 		driver.quit();
 	}
+	
+	public static void handleWindowNavigation() {
+	    driver.get("https://www.youtube.com");
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("search_query"))).sendKeys("TMKOC EP 101");
+	    driver.findElement(By.xpath("(//button[@title='Search'])[1]")).click();
+	    wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='video-title']")));
+	    for (int i = 0; i < 5; i++) {
+
+	        // Re-locate elements every loop
+	        List<WebElement> videos = driver.findElements(By.xpath("//a[@id='video-title']"));
+	        WebElement video = videos.get(i);
+			String expectedTitle = video.getDomAttribute("title");
+	        video.click();
+	        wait.until(ExpectedConditions.titleContains(expectedTitle));
+	        System.out.println("Title : " + driver.getTitle());
+	        System.out.println("URL   : " + driver.getCurrentUrl());
+	        driver.navigate().back();
+	        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='video-title']")));
+	    }
+	}
+
 	
 	public static void writeDynamicIntoExcel() throws IOException {
 		String projectPath = System.getProperty("user.dir");
