@@ -45,11 +45,11 @@ public class P {
 //		P.pastdatePicker(driver, "2021", "January", "26");
 //		P.dynamicPaginationTable();
 //		P.staticTable();
-//		P.getElementOfSearchhead();
+//		P.getElementOfSearchHead();
 //		P.bootStrapSelectorDropdown();
 //		P.frameHandle();
 //		P.selectDropDown();
-		P.handleWindowNavigation();
+//		P.handleWindowNavigation();
 		
 		driver.quit();
 	}
@@ -429,7 +429,7 @@ public class P {
 		System.out.println(".................Static Table End.....................");
 	}
 
-	public static void getElementOfSearchhead() {
+	public static void getElementOfSearchHead() {
 		System.out.println(".................Get Element of Search Head Start.....................");
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 		driver.manage().window().maximize();
