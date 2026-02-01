@@ -50,8 +50,24 @@ public class P {
 //		P.frameHandle();
 //		P.selectDropDown();
 //		P.handleWindowNavigation();
+		P.elementOfTableColumnWise();
 		
 		driver.quit();
+	}
+	
+	public static void elementOfTableColumnWise() {
+		driver.get("https://www.w3schools.com/sql/sql_select.asp");
+		driver.manage().window().maximize();
+		
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[@class='ws-table-all notranslate']//tr/td[3]")));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+		
+		List<WebElement> list = driver.findElements(By.xpath("//table[@class='ws-table-all notranslate']//tr/td[3]"));
+		for(WebElement s:list) {
+			System.out.println(s.getText());
+		}
 	}
 	
 	public static void handleWindowNavigation() {
