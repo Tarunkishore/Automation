@@ -25,7 +25,7 @@ public class workbook {
 			FileOutputStream out = new FileOutputStream(new File("NewExcelFile.xlsx"));
 			wb.write(out);
 			out.close();
-			
+			wb.close();
 		
 		
 	}
