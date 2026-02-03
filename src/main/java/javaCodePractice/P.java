@@ -34,7 +34,7 @@ public class P {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		
-//		P.writeDynamicIntoExcel();
+		P.writeDynamicIntoExcel();
 //		P.writeIntoExcel();
 //		P.readFromExcel();
 //		P.dragAndDrop();
