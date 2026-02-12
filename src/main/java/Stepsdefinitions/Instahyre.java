@@ -69,7 +69,7 @@ public class Instahyre {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement resumeInput = wait.until(ExpectedConditions.presenceOfElementLocated(
 		                By.xpath("//input[@type='file' and @id='resume-input']")));
-		resumeInput.sendKeys("/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		resumeInput.sendKeys(System.getProperty("user.dir")+"/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 		Thread.sleep(3000);	
 		wait.until(ExpectedConditions.textToBe(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']"), 
 				driver.findElement(By.xpath("//span[@class='candidate-resume-uploaded-time ng-binding']")).getText()

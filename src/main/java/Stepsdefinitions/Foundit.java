@@ -61,7 +61,7 @@ public class Foundit {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement resumeInput = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//input[@type='file']")));
-		resumeInput.sendKeys("/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		resumeInput.sendKeys(System.getProperty("user.dir")+"/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 		Thread.sleep(3000);
 		wait.until(ExpectedConditions.textToBe(By.xpath("//div[@class='bg-surface-background absolute bottom-0 left-0 flex w-full items-center gap-1 rounded-lg rounded-t-none border border-t-0 px-4 py-3 text-xs']"), 
 				driver.findElement(By.xpath("//div[@class='bg-surface-background absolute bottom-0 left-0 flex w-full items-center gap-1 rounded-lg rounded-t-none border border-t-0 px-4 py-3 text-xs']")).getText()

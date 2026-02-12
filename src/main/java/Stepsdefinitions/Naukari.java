@@ -35,7 +35,7 @@ public class Naukari {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement resumeInput = wait.until(ExpectedConditions.presenceOfElementLocated(
 		                By.xpath("//input[@type='file' and @id='attachCV']")));
-		resumeInput.sendKeys("/Users/tarunkishore/git/Automation/src/test/resources/utilities/Tarunkishore_Resume.pdf");
+		resumeInput.sendKeys(System.getProperty("user.dir")+"/src/test/resources/utilities/Tarunkishore_Resume.pdf");
 		Thread.sleep(3000);	
 		wait.until(ExpectedConditions.textToBe(By.xpath("//div[@class='updateOn typ-14Regular']"), 
 				driver.findElement(By.xpath("//div[@class='updateOn typ-14Regular']")).getText()));
