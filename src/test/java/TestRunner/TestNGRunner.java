@@ -1,5 +1,9 @@
 package TestRunner;
 
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
+
+import Stepsdefinitions.Common;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
@@ -16,7 +20,7 @@ import io.cucumber.testng.CucumberOptions;
 //		tags = "@TMKOC",
 //		tags = System.getProperty("cucumber.filter.tags", "@TMKOC"),
 		plugin = { "pretty",
-				"html:target/cucumber.html",
+				"Stepsdefinitions.CucumberStepListener",
 //				"html:target/cucumber-reports/cucumber.html",  // HTML Report
 //				"json:target/cucumber-reports/cucumber.json",  // JSON Report
 //				"junit:target/cucumber-reports/cucumber.xml",
@@ -26,5 +30,9 @@ import io.cucumber.testng.CucumberOptions;
 //		plugin = { "pretty","html:target/cucumber.html" }// tags used in feature file
 )
 public class TestNGRunner extends AbstractTestNGCucumberTests {
-	 
+	 @BeforeTest
+	 @Parameters({"browserName", "headless", "incognito"})
+	 public void setUp(String browserName, String headless, String incognito) {
+	 	Common.setup(browserName, headless, incognito);
+	 }
 }

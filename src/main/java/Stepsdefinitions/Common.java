@@ -1,39 +1,25 @@
 package Stepsdefinitions;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.edge.*;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.support.ui.*;
+
+import com.aventstack.extentreports.*;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.*;
+import io.cucumber.java.en.*;
 
 
 public class Common {
@@ -41,41 +27,91 @@ public class Common {
 	public static ExtentSparkReporter sparkReporter;	// UI of the report
 	public static ExtentReports extentReports;		// populate common info of the report
 	public static ExtentTest extentTest;		// create test case entries in the report and update status of the test methods
+	public static ThreadLocal<ExtentTest> scenarioExtentTest = new ThreadLocal<>();
+	public static ThreadLocal<Integer> stepCounter = ThreadLocal.withInitial(() -> 0);
+	public static String reportFilePath;
+	public static String reportDirectoryPath;
 	//	public static String destPath;
 	public static WebDriverWait wait;
-	ChromeOptions options = new ChromeOptions();
+	public static String browserName;
+	public static boolean headless;
+	public static boolean incognito;
+
+	public static void setup(String browser, String head, String incog) {
+		browserName = browser;
+		headless = Boolean.parseBoolean(head);
+		incognito = Boolean.parseBoolean(incog);
+	}
 
 //	@parameter({"browser"})
 	@Given("Launch Brave Browser")
 	public void launch_brave_browser() throws InterruptedException, IOException {
 
-		//		String browserPath = "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser";
-		//		String browserPath1 = "/Users/tarunkishore/eclipse-workspace/SeCuGhBDDTng/src/test/resources/drivers/chromedriver/chromedriver";
-		//		System.setProperty("webdriver.chrome.driver", browserPath1);
-		//		options.setBinary(browserPath);
+		if (browserName.equalsIgnoreCase("chrome")) {
+			ChromeOptions options = new ChromeOptions();
+			options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});	// to remove "chrome is being controlled by automated Software"
+			if (incognito) {
+				options.addArguments("--incognito");
+			}
+			if (headless) {
+				options.addArguments("--headless=new");
+			}
+			driver = new ChromeDriver(options);
+		} else if (browserName.equalsIgnoreCase("firefox")) {
+			FirefoxOptions options = new FirefoxOptions();
+			if (incognito) {
+				options.addArguments("-private");
+			}
+			if (headless) {
+				options.addArguments("-headless");
+			}
+			driver = new FirefoxDriver(options);
+		} else if (browserName.equalsIgnoreCase("edge")) {
+			EdgeOptions options = new EdgeOptions();
+			options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});
+			if (incognito) {
+				options.addArguments("--inprivate");
+			}
+			if (headless) {
+				options.addArguments("--headless=new");
+			}
+			driver = new EdgeDriver(options);
+		} else {
+			// Default to Chrome if no match
+			ChromeOptions options = new ChromeOptions();
+			options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});
+			if (incognito) {
+				options.addArguments("--incognito");
+			}
+			if (headless) {
+				options.addArguments("--headless=new");
+			}
+			driver = new ChromeDriver(options);
+		}
 
-		options.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});	// to remove "chrome is being controlled by automated Software"
-		options.addArguments("--incognito");
-		//		options.addArguments("--headless=new");
-		//		options.addArguments("--window-size=1920x1080");
-		//		options.addArguments("--disable-gpu"); // For compatibility with some systems
-		//		options.addArguments("--remote-debugging-port=9222");
-
-		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.manage().window().maximize();
 		System.out.println("Browser launched Successfully");
 		System.out.println("Looking for clearCacheCookes");
 		driver.manage().deleteAllCookies();
 		System.out.println("Successfully clearCacheCookes");
-
 	}
 
-	public static void extentSparkReport() {
+	public static synchronized void extentSparkReport() {
+		if (extentReports != null) {
+			return;
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss-ms");
 		extentReports = new ExtentReports();
-		String filepath = System.getProperty("user.dir") + "/extent-reports/" + sdf.format(new Date()) + ".html";
-		sparkReporter = new ExtentSparkReporter(filepath);
+		String reportDir = System.getProperty("user.dir") + "/report/";
+		try {
+			Files.createDirectories(Path.of(reportDir));
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to create report directory: " + reportDir, e);
+		}
+		reportDirectoryPath = reportDir;
+		reportFilePath = reportDir + sdf.format(new Date()) + ".html";
+		sparkReporter = new ExtentSparkReporter(reportFilePath);
 		sparkReporter.config().setTheme(Theme.DARK);
 		sparkReporter.config().setReportName("TMKOC Report Name");
 		sparkReporter.config().setDocumentTitle("MyReportTitle");
@@ -83,14 +119,19 @@ public class Common {
 		extentReports.setSystemInfo("Tester", "SQA TARUN");
 		extentReports.setSystemInfo("Operationg System", System.getProperty("os.name"));
 		extentReports.setSystemInfo("Java Version", System.getProperty("os.version"));
-
 	}
 
 	public static String getScreenshotPath() throws IOException {
+		if (driver == null) {
+			return null;
+		}
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		String timestamp = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss-ms").format(new Date());
 		File source = ts.getScreenshotAs(OutputType.FILE);
-		String destPath = System.getProperty("user.dir") + "/screenshots/" + timestamp + ".png";
+		String baseReportDir = reportDirectoryPath != null ? reportDirectoryPath : System.getProperty("user.dir") + "/report/";
+		String screenshotDir = baseReportDir + "screenshot/";
+		Files.createDirectories(Path.of(screenshotDir));
+		String destPath = screenshotDir + "screenshot-" + timestamp + ".png";
 		File file = new File(destPath);
 		FileUtils.copyFile(source, file);
 		return destPath;
@@ -118,23 +159,50 @@ public class Common {
 		return searchTerm;
 	}
 
-	//	 commented to not generate screenshot and extent report for now do not delete below line
-//	@AfterStep		//if u want extent report uncomment only this @AfterStep 
-	public void after(Scenario scenario) throws IOException {
+	@Before
+	public void beforeScenario(Scenario scenario) {
 		Common.extentSparkReport();
 		extentTest = extentReports.createTest(scenario.getName());
-		//		getScreenshotPath();
+		scenarioExtentTest.set(extentTest);
+		stepCounter.set(0);
+	}
 
-		if (scenario.isFailed()) {
-			extentTest.generateLog(Status.FAIL, scenario.getName());
-			//			extentTest.log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
-			extentTest.log(Status.FAIL, scenario.getName());
+	@AfterStep
+	public void afterStep(Scenario scenario) {
+		ExtentTest currentTest = scenarioExtentTest.get();
+		if (currentTest == null) {
+			return;
+		}
+		int currentStep = stepCounter.get() + 1;
+		stepCounter.set(currentStep);
+		String stepLabel = CucumberStepListener.getCurrentStep();
+		if (stepLabel == null || stepLabel.isBlank()) {
+			stepLabel = "Step " + currentStep;
+		}
+		Status stepStatus = mapToExtentStatus(scenario);
+		String screenshotPath = null;
+		try {
+			screenshotPath = Common.getScreenshotPath();
+		} catch (Exception e) {
+			currentTest.log(stepStatus, stepLabel + " - Screenshot capture failed: " + e.getMessage());
+		}
+		if (screenshotPath != null) {
+			currentTest.log(stepStatus, stepLabel,
+					MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
 		} else {
-			extentTest.generateLog(Status.PASS, scenario.getName());
-			extentTest.log(Status.PASS, scenario.getName());
-			//			extentTest.log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromPath(Common.getScreenshotPath()).build());
+			currentTest.log(stepStatus, stepLabel + " - Screenshot not available");
+		}
+	}
 
-		}		
+	private Status mapToExtentStatus(Scenario scenario) {
+		String cucumberStatus = scenario.getStatus().name();
+		if ("FAILED".equalsIgnoreCase(cucumberStatus)) {
+			return Status.FAIL;
+		}
+		if ("PASSED".equalsIgnoreCase(cucumberStatus)) {
+			return Status.PASS;
+		}
+		return Status.WARNING;
 	}
 
 	@Then("I click {string} times on {string}")
@@ -220,11 +288,16 @@ public class Common {
 		}
 	}
 
-
-
 	@After
 	public void tearDown() throws IOException {
-//		extentReports.flush();		// commented do not delete 
-		driver.quit();
+		if (extentReports != null) {
+			extentReports.flush();
+		}
+		CucumberStepListener.clear();
+		scenarioExtentTest.remove();
+		stepCounter.remove();
+		if (driver != null) {
+			driver.quit();
+		}
 	}
 }
